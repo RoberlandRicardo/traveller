@@ -8,8 +8,9 @@ import 'package:flutter/widgets.dart';
 class CustomButton extends StatelessWidget {
   final String textButton;
   final bool? outline;
+  final Function action;
 
-  CustomButton({required this.textButton, this.outline});
+  CustomButton({required this.textButton, this.outline, required this.action});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class CustomButton extends StatelessWidget {
                   : Color.fromRGBO(5, 41, 60, 1)),
               elevation:
                   MaterialStateProperty.all<double>(outline ?? false ? 0 : 2)),
-          onPressed: () {},
+          onPressed: () => action(),
         )),
       ),
     );
