@@ -11,6 +11,9 @@ class Cadastro extends StatelessWidget {
       functionFirstButton: () => {},
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/login')},
+      functionHomeButton: () {
+        Navigator.pushReplacementNamed(context, '/tab_container');
+      },
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Column(

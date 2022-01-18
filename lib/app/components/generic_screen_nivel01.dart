@@ -1,3 +1,5 @@
+// import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
@@ -8,13 +10,15 @@ class GenericScreen extends StatelessWidget {
   final String textSecondButton;
   final Function functionFirstButton;
   final Function functionSecondButton;
+  final Function functionHomeButton;
 
   GenericScreen(
       {required this.child,
       required this.textFirstButton,
       required this.textSecondButton,
       required this.functionFirstButton,
-      required this.functionSecondButton});
+      required this.functionSecondButton,
+      required this.functionHomeButton});
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +42,17 @@ class GenericScreen extends StatelessWidget {
                 height: 15,
               ),
               child,
-              Text(
-                "Modo sem autenticação",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    decoration: TextDecoration.underline,
-                    color: Color.fromRGBO(244, 54, 27, 1),
-                    fontWeight: FontWeight.bold),
+              TextButton(
+                child: Text(
+                  "Modo sem autenticação",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 16,
+                      decoration: TextDecoration.underline,
+                      color: Color.fromRGBO(244, 54, 27, 1),
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () => functionHomeButton(),
               ),
               SizedBox(
                 height: 20,

@@ -9,9 +9,13 @@ class Login extends StatelessWidget {
     return GenericScreen(
       textFirstButton: "ENTRAR",
       textSecondButton: "AINDA NÃO TENHO CONTA",
-      functionFirstButton: () => {},
+      functionFirstButton: () =>
+          {Navigator.pushReplacementNamed(context, '/tab_container')},
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/cadastro')},
+      functionHomeButton: () {
+        Navigator.pushReplacementNamed(context, '/tab_container');
+      },
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Column(
