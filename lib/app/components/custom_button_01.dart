@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:traveller/app/styles/custom_text.dart';
 
 class CustomButton extends StatelessWidget {
   final String textButton;
@@ -19,24 +20,23 @@ class CustomButton extends StatelessWidget {
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: (ElevatedButton(
-          child: Text(
-            textButton,
-            style: TextStyle(
-                color: outline ?? false
-                    ? Color.fromRGBO(5, 41, 60, 1)
-                    : Color.fromRGBO(227, 227, 227, 1)),
-          ),
+          child: Text(textButton,
+              style: outline ?? false
+                  ? TextStyle(
+                      fontSize: CustomText.fontSizeButton,
+                      color: Theme.of(context).colorScheme.primary)
+                  : Theme.of(context).textTheme.button),
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0.0),
                       side: BorderSide(
                           color: outline ?? false
-                              ? Color.fromRGBO(5, 41, 60, 1)
+                              ? Theme.of(context).colorScheme.primary
                               : Colors.black))),
               backgroundColor: MaterialStateProperty.all<Color>(outline ?? false
                   ? Color.fromRGBO(0, 0, 0, 0)
-                  : Color.fromRGBO(5, 41, 60, 1)),
+                  : Theme.of(context).colorScheme.primary),
               elevation:
                   MaterialStateProperty.all<double>(outline ?? false ? 0 : 2)),
           onPressed: () => action(),

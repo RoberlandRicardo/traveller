@@ -18,37 +18,17 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 35,
-            ),
-            Container(
-                width: 60.0,
-                height: 60.0,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
-                )),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "BEM VINDO,",
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromRGBO(19, 19, 19, 1)),
-            ),
+            Text("BEM VINDO,", style: Theme.of(context).textTheme.subtitle1),
             SizedBox(
               height: 20,
             ),
             Text(
               "O TRAVELLER \n TE AGUARDA =)",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(19, 19, 19, 1)),
+              style: Theme.of(context).textTheme.headline1,
             ),
             Image.asset(
-              'assets/traveling-pana.png',
+              'assets/images/traveling-pana.png',
               width: 300,
               height: 270,
               fit: BoxFit.fitWidth,

@@ -22,11 +22,25 @@ class GenericScreen extends StatelessWidget {
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: Column(
+          child: ListView(
             children: [
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                  width: 60.0,
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                  )),
+              SizedBox(
+                height: 15,
+              ),
               child,
               Text(
                 "Modo sem autenticação",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 16,
                     decoration: TextDecoration.underline,
@@ -49,6 +63,9 @@ class GenericScreen extends StatelessWidget {
                 outline: true,
                 action: functionSecondButton,
               ),
+              SizedBox(
+                height: 15,
+              )
             ],
           ),
         ),
