@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveller/app/views/home.dart';
+import 'package:traveller/app/views/travel.dart';
 
 class TabContainer extends StatefulWidget {
   const TabContainer({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _TabContainerState extends State<TabContainer> {
 
   static const List<Widget> _pages = <Widget>[
     Home(),
-    Home(),
+    Travel(),
     Home(),
     Home(),
   ];
@@ -31,6 +32,7 @@ class _TabContainerState extends State<TabContainer> {
       appBar: _selectedIndex == 0
           ? null
           : AppBar(
+              automaticallyImplyLeading: false,
               iconTheme: IconThemeData(color: Color.fromRGBO(224, 224, 224, 1)),
               title: Text(
                 listNameAppBar[_selectedIndex],
@@ -46,7 +48,7 @@ class _TabContainerState extends State<TabContainer> {
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Color.fromRGBO(108, 129, 165, 1),
         unselectedItemColor: Color.fromRGBO(108, 129, 165, 1),
-        backgroundColor: Color.fromRGBO(19, 19, 19, 1),
+        backgroundColor: Color.fromRGBO(5, 41, 60, 1),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,

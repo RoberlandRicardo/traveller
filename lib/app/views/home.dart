@@ -10,7 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String _state = 'not_travel';
+  String state = 'not_travel';
   String location = 'Rio Grande do Norte, Brasil';
   String name = 'Fulano';
   String _coin = '5,23';
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                     ]),
               ),
               Spacer(),
-              if (_state == 'travel')
+              if (state == 'travel')
                 Container(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
           Spacer(),
           getWidgetTextTop(),
           Spacer(),
-          if (_state == 'not_travel')
+          if (state == 'not_travel')
             SvgPicture.asset(
               'assets/svgs/journey.svg',
               width: 320.0,
@@ -123,7 +123,7 @@ class _HomeState extends State<Home> {
   bool get wantKeepAlive => throw UnimplementedError();
 
   getWidgetTextTop() {
-    if (_state == 'travel') {
+    if (state == 'travel') {
       return Container(
         child: Column(children: [
           Text(
@@ -138,7 +138,7 @@ class _HomeState extends State<Home> {
           )
         ]),
       );
-    } else if (_state == 'before_travel') {
+    } else if (state == 'before_travel') {
       return Container(
         child: Column(children: [
           Text(
@@ -159,7 +159,7 @@ class _HomeState extends State<Home> {
   }
 
   getWidgetTextBottom() {
-    if (_state == 'travel') {
+    if (state == 'travel') {
       return Row(
         children: [
           Container(
@@ -187,7 +187,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       );
-    } else if (_state == 'before_travel') {
+    } else if (state == 'before_travel') {
       return Container(
         child: Column(children: [
           Text(
