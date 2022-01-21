@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:traveller/app/components/generic_screen_nivel02.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -35,88 +36,91 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Padding(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(224, 224, 224, 1),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Row(children: [
-                  Icon(Icons.location_on,
-                      color: Color.fromRGBO(244, 54, 27, 1)),
-                  Text(location)
-                ]),
-              ),
-              Spacer(),
-              Container(
-                  width: 45.0,
-                  height: 45.0,
+    return GenericScreen(
+      currendIndex: 0,
+      child: SafeArea(
+          child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                  )),
-            ],
-          ),
-          Spacer(),
-          Row(
-            children: [
-              Container(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Olá,',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 34),
-                      ),
-                      Text(
-                        name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 34),
-                      ),
-                    ]),
-              ),
-              Spacer(),
-              if (state == 'travel')
+                      color: Color.fromRGBO(224, 224, 224, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: Row(children: [
+                    Icon(Icons.location_on,
+                        color: Color.fromRGBO(244, 54, 27, 1)),
+                    Text(location)
+                  ]),
+                ),
+                Spacer(),
+                Container(
+                    width: 45.0,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    )),
+              ],
+            ),
+            Spacer(),
+            Row(
+              children: [
                 Container(
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Dolár americano'),
                         Text(
-                          _coin,
+                          'Olá,',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
+                              fontWeight: FontWeight.bold, fontSize: 34),
                         ),
-                        Text('reais')
+                        Text(
+                          name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 34),
+                        ),
                       ]),
                 ),
-            ],
-          ),
-          Spacer(),
-          getWidgetTextTop(),
-          Spacer(),
-          if (state == 'not_travel')
-            SvgPicture.asset(
-              'assets/svgs/journey.svg',
-              width: 320.0,
-              height: 320.0,
-            )
-          else
-            SvgPicture.asset('assets/svgs/cuate.svg',
-                width: 280.0, height: 280.0),
-          Spacer(),
-          getWidgetTextBottom(),
-          Spacer()
-        ],
-      ),
-    ));
+                Spacer(),
+                if (state == 'travel')
+                  Container(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text('Dolár americano'),
+                          Text(
+                            _coin,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                          ),
+                          Text('reais')
+                        ]),
+                  ),
+              ],
+            ),
+            Spacer(),
+            getWidgetTextTop(),
+            Spacer(),
+            if (state == 'not_travel')
+              SvgPicture.asset(
+                'assets/svgs/journey.svg',
+                width: 320.0,
+                height: 320.0,
+              )
+            else
+              SvgPicture.asset('assets/svgs/cuate.svg',
+                  width: 280.0, height: 280.0),
+            Spacer(),
+            getWidgetTextBottom(),
+            Spacer()
+          ],
+        ),
+      )),
+    );
   }
 
   @override

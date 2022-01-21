@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
           children: [
             Text("BEM VINDO,", style: Theme.of(context).textTheme.subtitle1),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
             Text(
               "O TRAVELLER \n TE AGUARDA =)",
@@ -33,7 +33,7 @@ class SplashScreen extends StatelessWidget {
             Image.asset(
               'assets/images/traveling-pana.png',
               width: 300,
-              height: 270,
+              height: 250,
               fit: BoxFit.fitWidth,
             ),
           ],

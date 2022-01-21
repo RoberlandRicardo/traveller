@@ -76,6 +76,6 @@ class GenericScreen extends StatelessWidget {
             ],
           ),
         ),
-        backgroundColor: Color.fromRGBO(245, 170, 82, 1));
+        backgroundColor: Theme.of(context).colorScheme.background);
   }
 }
