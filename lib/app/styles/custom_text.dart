@@ -9,6 +9,7 @@ class CustomText extends TextTheme {
   static final double fontSizeButton = 16;
   static final double fontSizeLabel = 14;
   static final double fontSizeInput = 16;
+  static final double fontSizeBody = 16;
 
   static final TextStyle label = TextStyle(
       fontFamily: fontFamily,
@@ -24,20 +25,23 @@ class CustomText extends TextTheme {
 
   CustomText()
       : super(
-          headline1: TextStyle(
+            headline1: TextStyle(
+                fontFamily: fontFamily,
+                fontSize: fontSizeh1,
+                color: fontColor,
+                fontWeight: FontWeight.w700),
+            subtitle1: TextStyle(
               fontFamily: fontFamily,
-              fontSize: fontSizeh1,
+              fontSize: fontSizeSubtitle,
               color: fontColor,
-              fontWeight: FontWeight.w700),
-          subtitle1: TextStyle(
-            fontFamily: fontFamily,
-            fontSize: fontSizeSubtitle,
-            color: fontColor,
-          ),
-          button: TextStyle(
-            fontFamily: fontFamily,
-            fontSize: fontSizeButton,
-            color: fontColorButton,
-          ),
-        );
+            ),
+            button: TextStyle(
+              fontFamily: fontFamily,
+              fontSize: fontSizeButton,
+              color: fontColorButton,
+            ),
+            bodyText1: TextStyle(
+                fontFamily: fontFamily,
+                fontSize: fontSizeBody,
+                color: fontColor));
 }
