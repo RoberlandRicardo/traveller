@@ -62,7 +62,7 @@ class Perfil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
-      currendIndex: 2,
+      currendIndex: 3,
       child: SingleChildScrollView(
         child: Column(
           children: [

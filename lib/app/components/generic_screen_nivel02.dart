@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:traveller/app/styles/custom_text.dart';
 import 'package:traveller/app/views/home.dart';
 
 class GenericScreen extends StatelessWidget {
@@ -15,9 +16,26 @@ class GenericScreen extends StatelessWidget {
     '/perfil',
   ];
 
+  static const List<String> _topBarNames = <String>[
+    'Home',
+    'Viagens',
+    'Feed',
+    'Perfil',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: currendIndex > 0
+            ? AppBar(
+                title: Text(
+                  _topBarNames[currendIndex],
+                  style: CustomText.topBar,
+                ),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                titleSpacing: 0,
+              )
+            : null,
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,

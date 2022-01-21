@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/views/perfil.dart';
-import 'package:traveller/app/views/tab_container.dart';
 // import 'package:traveller/app/components/tab_container.dart';
 import 'package:traveller/app/styles/custom_colors.dart';
 import 'package:traveller/app/styles/custom_text.dart';
