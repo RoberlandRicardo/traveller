@@ -6,6 +6,7 @@ class CustomText extends TextTheme {
   static final Color fontColorButton = Color.fromRGBO(227, 227, 227, 1);
   static final Color fontColorTopBar = Color.fromRGBO(227, 227, 227, 1);
   static final double fontSizeh1 = 34;
+  static final double fontSizeh2 = 24;
   static final double fontSizeSubtitle = 16;
   static final double fontSizeButton = 16;
   static final double fontSizeLabel = 14;
@@ -37,6 +38,11 @@ class CustomText extends TextTheme {
             headline1: TextStyle(
                 fontFamily: fontFamily,
                 fontSize: fontSizeh1,
+                color: fontColor,
+                fontWeight: FontWeight.w700),
+            headline2: TextStyle(
+                fontFamily: fontFamily,
+                fontSize: fontSizeh2,
                 color: fontColor,
                 fontWeight: FontWeight.w700),
             subtitle1: TextStyle(

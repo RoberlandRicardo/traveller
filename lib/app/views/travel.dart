@@ -23,7 +23,7 @@ class _TravelState extends State<Travel> {
           color: Color.fromRGBO(245, 170, 82, 1),
           child: InkWell(
             onTap: () {
-              //print('called on tap');
+              Navigator.pushNamed(context, '/cadastroTravel');
             },
             child: Container(
               decoration: BoxDecoration(

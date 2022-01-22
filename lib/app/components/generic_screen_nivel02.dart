@@ -33,7 +33,6 @@ class GenericScreen extends StatelessWidget {
                   style: CustomText.topBar,
                 ),
                 backgroundColor: Theme.of(context).colorScheme.primary,
-                titleSpacing: 0,
               )
             : null,
         body: Container(

@@ -10,11 +10,11 @@ class Login extends StatelessWidget {
       textFirstButton: "ENTRAR",
       textSecondButton: "AINDA NÃO TENHO CONTA",
       functionFirstButton: () =>
-          {Navigator.pushReplacementNamed(context, '/home')},
+          {Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false)},
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/cadastro')},
       functionHomeButton: () {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
       },
       child: FractionallySizedBox(
         widthFactor: 0.9,

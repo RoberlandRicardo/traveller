@@ -67,7 +67,7 @@ class Perfil extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 40,
+              height: 20,
             ),
             GestureDetector(
               child: Container(
