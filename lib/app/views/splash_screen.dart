@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
           Navigator.pushNamed(context, '/cadastro');
         },
         functionHomeButton: () {
-          Navigator.pushNamed(context, '/tab_container');
+          Navigator.pushNamed(context, '/home');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
