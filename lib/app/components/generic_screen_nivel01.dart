@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
+import 'package:traveller/app/styles/custom_text.dart';
 
 class GenericScreen extends StatelessWidget {
   final Widget child;
@@ -49,7 +50,7 @@ class GenericScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 16,
                       decoration: TextDecoration.underline,
-                      color: Color.fromRGBO(244, 54, 27, 1),
+                      color: CustomText.fontColorOrange,
                       fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => functionHomeButton(),

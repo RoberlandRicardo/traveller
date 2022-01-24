@@ -43,28 +43,27 @@ class CustomText extends TextTheme {
 
   CustomText()
       : super(
-            headline1: TextStyle(
-                fontFamily: fontFamily,
-                fontSize: fontSizeh1,
-                color: fontColor,
-                fontWeight: FontWeight.w700),
-            headline2: TextStyle(
-                fontFamily: fontFamily,
-                fontSize: fontSizeh2,
-                color: fontColor,
-                fontWeight: FontWeight.w700),
-            subtitle1: TextStyle(
+          headline1: TextStyle(
               fontFamily: fontFamily,
-              fontSize: fontSizeSubtitle,
+              fontSize: fontSizeh1,
               color: fontColor,
-            ),
-            button: TextStyle(
+              fontWeight: FontWeight.w700),
+          headline2: TextStyle(
               fontFamily: fontFamily,
-              fontSize: fontSizeButton,
-              color: fontColorButton,
-            ),
-            bodyText1: TextStyle(
-                fontFamily: fontFamily,
-                fontSize: fontSizeBody,
-                color: fontColor));
+              fontSize: fontSizeh2,
+              color: fontColor,
+              fontWeight: FontWeight.w700),
+          subtitle1: TextStyle(
+            fontFamily: fontFamily,
+            fontSize: fontSizeSubtitle,
+            color: fontColor,
+          ),
+          button: TextStyle(
+            fontFamily: fontFamily,
+            fontSize: fontSizeButton,
+            color: fontColorButton,
+          ),
+          bodyText1: TextStyle(
+              fontFamily: fontFamily, fontSize: fontSizeBody, color: fontColor),
+        );
 }

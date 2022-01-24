@@ -10,8 +10,8 @@ class Pagination extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 28,
-          height: 28,
+          width: 24,
+          height: 24,
           color: pageIndex >= actualIndex
               ? Theme.of(context).colorScheme.secondary
               : Color.fromRGBO(142, 142, 142, 1),
@@ -19,7 +19,7 @@ class Pagination extends StatelessWidget {
         SizedBox(
           child: actualIndex < total - 1
               ? Container(
-                  width: 45,
+                  width: 50,
                   height: 2,
                   color: pageIndex >= actualIndex + 1
                       ? Theme.of(context).colorScheme.secondary

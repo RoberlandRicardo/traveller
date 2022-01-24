@@ -28,7 +28,7 @@ class GenericScreen extends StatelessWidget {
           titleSpacing: 0,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () => floactingActionButtonFunction!(),
           child: Icon(
             Icons.arrow_forward,
             color: CustomText.fontColorTopBar,

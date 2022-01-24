@@ -22,7 +22,7 @@ void main() {
       '/home': (context) => Home(),
       '/travel': (context) => Travel(),
       '/perfil': (context) => Perfil(),
-      '/cadastroTravel': (context) => Campos()
+      '/cadastroTravel': (context) => Campos(),
     },
     theme: ThemeData(
         fontFamily: CustomText.fontFamily,
