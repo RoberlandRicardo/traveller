@@ -115,12 +115,14 @@ class Rotas extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              CardRoute(
-                last: false,
+              SingleChildScrollView(
+                child: CardRoute(
+                  last: false,
+                ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              // SizedBox(
+              //   height: 20,
+              // ),
               Center(
                 child: CustomButton(
                   textButton: "ADICIONE UMA LOCALIZAÇÃO",
