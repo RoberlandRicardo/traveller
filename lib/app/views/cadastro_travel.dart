@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:traveller/app/components/card/card_cadastro_route.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel03.dart';
 import 'package:traveller/app/components/pagination_01.dart';
@@ -112,7 +113,13 @@ class Rotas extends StatelessWidget {
                     ]),
               ),
               SizedBox(
-                height: 40,
+                height: 20,
+              ),
+              CardRoute(
+                last: false,
+              ),
+              SizedBox(
+                height: 20,
               ),
               Center(
                 child: CustomButton(
