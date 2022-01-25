@@ -72,7 +72,32 @@ class Campos extends StatelessWidget {
   }
 }
 
-class Rotas extends StatelessWidget {
+class Rotas extends StatefulWidget {
+  List<String>? rotas;
+
+  Rotas({this.rotas}) {
+    if (rotas == null) rotas = ["", ""];
+  }
+
+  @override
+  State<Rotas> createState() => _RotasState();
+}
+
+class _RotasState extends State<Rotas> {
+  void createRota() {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(50),
+            bottom: Radius.circular(50),
+          ),
+        ),
+        builder: (builder) {
+          return Container();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
@@ -80,57 +105,55 @@ class Rotas extends StatelessWidget {
       floactingActionButtonFunction: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 25,
-              ),
-              Pagination(currentIndex: 1, total: 3),
-              SizedBox(height: 25),
-              Text(
-                "Qual sua rota?",
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              RichText(
-                text: TextSpan(
-                    text:
-                        "Adicione quais os pontos que vocês deseja visitar, informações sobre passagem e hospedagem.\n",
-                    style: Theme.of(context).textTheme.bodyText1,
-                    children: [
-                      TextSpan(text: "Você esta indo em "),
-                      TextSpan(
-                          text: "00/00/0000 ", style: CustomText.buttonOrange),
-                      TextSpan(
-                        text: "e voltando em ",
-                      ),
-                      TextSpan(
-                          text: "00/00/0000.", style: CustomText.buttonOrange),
-                    ]),
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 25,
+            ),
+            Pagination(currentIndex: 1, total: 3),
+            SizedBox(height: 25),
+            Text(
+              "Qual sua rota?",
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            RichText(
+              text: TextSpan(
+                  text:
+                      "Adicione quais os pontos que vocês deseja visitar, informações sobre passagem e hospedagem.\n",
+                  style: Theme.of(context).textTheme.bodyText1,
+                  children: [
+                    TextSpan(text: "Você esta indo em "),
+                    TextSpan(
+                        text: "00/00/0000 ", style: CustomText.buttonOrange),
+                    TextSpan(
+                      text: "e voltando em ",
+                    ),
+                    TextSpan(
+                        text: "00/00/0000.", style: CustomText.buttonOrange),
+                  ]),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+                child: ListView(children: [
+              for (int i = 0; i < widget.rotas!.length; i++)
+                CardRoute(last: !(i < widget.rotas!.length - 1)),
               SizedBox(
                 height: 20,
               ),
-              SingleChildScrollView(
-                child: CardRoute(
-                  last: false,
-                ),
-              ),
-              // SizedBox(
-              //   height: 20,
-              // ),
               Center(
                 child: CustomButton(
                   textButton: "ADICIONE UMA LOCALIZAÇÃO",
-                  action: () {},
+                  action: () => createRota(),
                 ),
               ),
-            ],
-          ),
+            ])),
+          ],
         ),
       ),
     );

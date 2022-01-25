@@ -41,7 +41,7 @@ Widget dashedArrow(BuildContext context) {
             turns: AlwaysStoppedAnimation(90 / 360),
             child: Icon(
               Icons.arrow_forward_ios,
-              size: 21,
+              size: 20,
               color: Theme.of(context).colorScheme.primary,
             )),
       ),
@@ -96,7 +96,7 @@ class _CardRouteState extends State<CardRoute> {
             ),
           ),
         ),
-        dashedArrow(context),
+        widget.last == false ? dashedArrow(context) : SizedBox(),
       ],
     );
   }
