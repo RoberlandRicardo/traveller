@@ -75,7 +75,7 @@ class _CardRouteState extends State<CardRoute> {
                           "Localização",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: CustomText.fontSizeh3,
+                              fontSize: CustomText.fontSizeh4,
                               color: Color.fromRGBO(83, 83, 83, 1)),
                         ),
                       ),

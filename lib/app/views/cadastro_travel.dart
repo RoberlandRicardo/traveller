@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/card/card_cadastro_route.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel03.dart';
+import 'package:traveller/app/components/modal/modal_rota.dart';
 import 'package:traveller/app/components/pagination_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
@@ -76,7 +77,7 @@ class Rotas extends StatefulWidget {
   List<String>? rotas;
 
   Rotas({this.rotas}) {
-    if (rotas == null) rotas = ["", ""];
+    if (rotas == null) rotas = [];
   }
 
   @override
@@ -89,12 +90,12 @@ class _RotasState extends State<Rotas> {
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(50),
-            bottom: Radius.circular(50),
+            top: Radius.circular(20),
+            bottom: Radius.circular(20),
           ),
         ),
         builder: (builder) {
-          return Container();
+          return ModalRota();
         });
   }
 
