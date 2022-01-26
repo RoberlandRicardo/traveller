@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:traveller/app/components/card/card_cadastro_route.dart';
+import 'package:traveller/app/components/card/card_localizacao.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel03.dart';
 import 'package:traveller/app/components/modal/modal_localizacao.dart';
 import 'package:traveller/app/components/pagination_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
+import 'package:traveller/app/models/localizacao.dart';
 
 class Campos extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class Campos extends StatelessWidget {
       title: "Cadastro de viagem",
       floactingActionButtonFunction: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Rotas()));
+            context, MaterialPageRoute(builder: (context) => Localizacaos()));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -73,21 +74,18 @@ class Campos extends StatelessWidget {
   }
 }
 
-class Rotas extends StatefulWidget {
-  List<String>? rotas;
-
-  Rotas({this.rotas}) {
-    if (rotas == null) rotas = [];
-  }
-
+class Localizacaos extends StatefulWidget {
   @override
-  State<Rotas> createState() => _RotasState();
+  State<Localizacaos> createState() => _LocalizacaosState();
 }
 
-class _RotasState extends State<Rotas> {
+class _LocalizacaosState extends State<Localizacaos> {
+  List<Localizacao> localizacaos = [];
+
   void createRota(BuildContext context) {
     showModalBottomSheet<dynamic>(
         isScrollControlled: true,
+        enableDrag: false,
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -99,7 +97,15 @@ class _RotasState extends State<Rotas> {
           maxWidth: MediaQuery.of(context).size.width * 0.95,
         ),
         builder: (builder) {
-          return Wrap(children: [ModalLocalizacao()]);
+          return Wrap(children: [
+            ModalLocalizacao(
+              confirmFunction: (localizacao) {
+                setState(() {
+                  localizacaos.add(localizacao);
+                });
+              },
+            )
+          ]);
         });
   }
 
@@ -107,7 +113,9 @@ class _RotasState extends State<Rotas> {
   Widget build(BuildContext context) {
     return GenericScreen(
       title: "Cadastro de viagem",
-      floactingActionButtonFunction: () {},
+      floactingActionButtonFunction: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Bag()));
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
@@ -138,7 +146,10 @@ class _RotasState extends State<Rotas> {
                       text: "e voltando em ",
                     ),
                     TextSpan(
-                        text: "00/00/0000.", style: CustomText.buttonOrange),
+                        text: "00/00/0000", style: CustomText.buttonOrange),
+                    TextSpan(
+                      text: ".",
+                    ),
                   ]),
             ),
             SizedBox(
@@ -146,8 +157,8 @@ class _RotasState extends State<Rotas> {
             ),
             Expanded(
                 child: ListView(children: [
-              for (int i = 0; i < widget.rotas!.length; i++)
-                CardRoute(last: !(i < widget.rotas!.length - 1)),
+              for (int i = 0; i < localizacaos.length; i++)
+                CardLocalizacao(last: (i == localizacaos.length - 1)),
               SizedBox(
                 height: 20,
               ),
@@ -160,6 +171,53 @@ class _RotasState extends State<Rotas> {
             ])),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Bag extends StatefulWidget {
+  @override
+  State<Bag> createState() => _BagState();
+}
+
+class _BagState extends State<Bag> {
+  @override
+  Widget build(BuildContext context) {
+    return GenericScreen(
+      title: "Cadastro de viagem",
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(
+            height: 25,
+          ),
+          Pagination(currentIndex: 2, total: 3),
+          SizedBox(height: 25),
+          Text(
+            "O que você pretende levar?",
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          RichText(
+            text: TextSpan(
+                text: "Adicione o que você pretende levar para essa viagem. \n",
+                style: Theme.of(context).textTheme.bodyText1,
+                children: [
+                  TextSpan(text: "Você esta indo em "),
+                  TextSpan(text: "00/00/0000 ", style: CustomText.buttonOrange),
+                  TextSpan(
+                    text: "e voltando em ",
+                  ),
+                  TextSpan(text: "00/00/0000", style: CustomText.buttonOrange),
+                  TextSpan(
+                    text: ".",
+                  ),
+                ]),
+          ),
+        ]),
       ),
     );
   }

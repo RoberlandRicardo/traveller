@@ -6,8 +6,13 @@ class GenericModal extends StatefulWidget {
   final String title;
   final Icon? icon;
   final Widget child;
+  final Function? confirmFunction;
 
-  GenericModal({required this.title, this.icon, required this.child});
+  GenericModal(
+      {required this.title,
+      this.icon,
+      required this.child,
+      this.confirmFunction});
 
   @override
   State<GenericModal> createState() => _GenericModalState();
@@ -60,7 +65,10 @@ class _GenericModalState extends State<GenericModal> {
                     width: 10,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      widget.confirmFunction!();
+                      Navigator.pop(context);
+                    },
                     child: RichText(
                         text: TextSpan(
                             style: Theme.of(context).textTheme.bodyText1,

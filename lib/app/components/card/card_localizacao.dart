@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
-class CardRoute extends StatefulWidget {
+class CardLocalizacao extends StatefulWidget {
   final bool last;
 
-  CardRoute({required this.last});
+  CardLocalizacao({required this.last});
 
   @override
-  _CardRouteState createState() => _CardRouteState();
+  _CardLocalizacaoState createState() => _CardLocalizacaoState();
 }
 
 Widget dashedArrow(BuildContext context) {
@@ -49,12 +49,13 @@ Widget dashedArrow(BuildContext context) {
   );
 }
 
-class _CardRouteState extends State<CardRoute> {
+class _CardLocalizacaoState extends State<CardLocalizacao> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Card(
+          margin: EdgeInsets.all(0),
           color: Color.fromRGBO(233, 230, 230, 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
