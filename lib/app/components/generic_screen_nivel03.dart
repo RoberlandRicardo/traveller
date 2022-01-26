@@ -8,10 +8,11 @@ class GenericScreen extends StatelessWidget {
   final String title;
   final Function? floactingActionButtonFunction;
 
-  GenericScreen(
-      {required this.child,
-      required this.title,
-      this.floactingActionButtonFunction});
+  GenericScreen({
+    required this.child,
+    required this.title,
+    this.floactingActionButtonFunction,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomText extends TextTheme {
   static final String fontFamily = 'Source Sans Pro';
   static final Color fontColor = Color.fromRGBO(19, 19, 19, 1);
+  static final Color fontColor2 = Color.fromRGBO(0, 0, 0, 1);
   static final Color fontColorButton = Color.fromRGBO(227, 227, 227, 1);
   static final Color fontColorTopBar = Color.fromRGBO(227, 227, 227, 1);
   static final Color fontColorOrange = Color.fromRGBO(244, 54, 27, 1);
@@ -13,7 +14,9 @@ class CustomText extends TextTheme {
   static final double fontSizeSubtitle = 16;
   static final double fontSizeButton = 16;
   static final double fontSizeLabel = 14;
+  static final double fontSizeLabelModal = 16;
   static final double fontSizeInput = 16;
+  static final double fontSizeInputModal = 16;
   static final double fontSizeBody = 16;
   static final double fontSizeTopBar = 20;
 
@@ -23,9 +26,21 @@ class CustomText extends TextTheme {
       color: fontColor,
       fontWeight: FontWeight.w700);
 
+  static final TextStyle labelModal = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: fontSizeLabelModal,
+      color: fontColor,
+      fontWeight: FontWeight.w700);
+
   static final TextStyle input = TextStyle(
     fontFamily: fontFamily,
     fontSize: fontSizeInput,
+    color: fontColor,
+  );
+
+  static final TextStyle inputModal = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeInputModal,
     color: fontColor,
   );
 
@@ -77,5 +92,9 @@ class CustomText extends TextTheme {
           ),
           bodyText1: TextStyle(
               fontFamily: fontFamily, fontSize: fontSizeBody, color: fontColor),
+          bodyText2: TextStyle(
+              fontFamily: fontFamily,
+              fontSize: fontSizeBody,
+              color: fontColor2),
         );
 }

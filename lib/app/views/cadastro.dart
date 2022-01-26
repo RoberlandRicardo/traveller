@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
-import 'package:traveller/app/components/input_01.dart';
+import 'package:traveller/app/components/input/input_01.dart';
 
 class Cadastro extends StatelessWidget {
   @override

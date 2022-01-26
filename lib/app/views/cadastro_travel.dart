@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/card/card_cadastro_route.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel03.dart';
-import 'package:traveller/app/components/modal/modal_rota.dart';
+import 'package:traveller/app/components/modal/modal_localizacao.dart';
 import 'package:traveller/app/components/pagination_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
@@ -85,8 +85,9 @@ class Rotas extends StatefulWidget {
 }
 
 class _RotasState extends State<Rotas> {
-  void createRota() {
-    showModalBottomSheet(
+  void createRota(BuildContext context) {
+    showModalBottomSheet<dynamic>(
+        isScrollControlled: true,
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -94,8 +95,11 @@ class _RotasState extends State<Rotas> {
             bottom: Radius.circular(20),
           ),
         ),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.95,
+        ),
         builder: (builder) {
-          return ModalRota();
+          return Wrap(children: [ModalLocalizacao()]);
         });
   }
 
@@ -150,7 +154,7 @@ class _RotasState extends State<Rotas> {
               Center(
                 child: CustomButton(
                   textButton: "ADICIONE UMA LOCALIZAÇÃO",
-                  action: () => createRota(),
+                  action: () => createRota(context),
                 ),
               ),
             ])),
