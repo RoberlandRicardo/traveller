@@ -3,7 +3,20 @@ import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String _username = '';
+  String _password = '';
+
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
@@ -38,40 +51,51 @@ class Login extends StatelessWidget {
             SizedBox(
               height: 40,
             ),
-            Input(
-                label: "Usuário",
-                placeholder: "Digite seu usuário",
-                onChanged: (value) {
-                  print(value);
-                }),
-            SizedBox(
-              height: 20,
-            ),
-            Input(
-                label: "Senha",
-                placeholder: "Digite sua senha",
-                onChanged: (value) {
-                  print(value);
-                }),
-            SizedBox(
-              height: 15,
-            ),
-            FractionallySizedBox(
-              widthFactor: 0.96,
-              child: GestureDetector(
-                onTap: () => {},
-                child: Text(
-                  "Esqueci minha senha",
-                  style: TextStyle(
-                      fontFamily: CustomText.fontFamily,
-                      color: CustomText.fontColor,
-                      decoration: TextDecoration.underline),
-                  textAlign: TextAlign.right,
-                ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Input(
+                      controller: usernameController,
+                      label: "Usuário",
+                      placeholder: "Digite seu usuário",
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+                          _username = value;
+                        });
+                      }),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Input(
+                      label: "Senha",
+                      placeholder: "Digite sua senha",
+                      onChanged: (value) {
+                        print(value);
+                      }),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.96,
+                    child: GestureDetector(
+                      onTap: () => {},
+                      child: Text(
+                        "Esqueci minha senha",
+                        style: TextStyle(
+                            fontFamily: CustomText.fontFamily,
+                            color: CustomText.fontColor,
+                            decoration: TextDecoration.underline),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 40,
             ),
           ],
         ),
