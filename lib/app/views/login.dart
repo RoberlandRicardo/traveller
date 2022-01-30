@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -17,13 +18,24 @@ class _LoginState extends State<Login> {
   String _username = '';
   String _password = '';
 
+  Future<void> login() async {
+    const request = 'http://10.0.2.2:8000/traveller/login';
+    http.Response response = await http.post(Uri.parse(request), body: {
+      "username": _username,
+      "password": _password,
+    });
+
+    if (response.statusCode == 201) {
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
       textFirstButton: "ENTRAR",
       textSecondButton: "AINDA NÃO TENHO CONTA",
-      functionFirstButton: () =>
-          {Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false)},
+      functionFirstButton: () => login(),
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/cadastro')},
       functionHomeButton: () {
@@ -60,7 +72,6 @@ class _LoginState extends State<Login> {
                       label: "Usuário",
                       placeholder: "Digite seu usuário",
                       onChanged: (value) {
-                        print(value);
                         setState(() {
                           _username = value;
                         });
@@ -69,10 +80,13 @@ class _LoginState extends State<Login> {
                     height: 20,
                   ),
                   Input(
+                      controller: passwordController,
                       label: "Senha",
                       placeholder: "Digite sua senha",
                       onChanged: (value) {
-                        print(value);
+                        setState(() {
+                          _password = value;
+                        });
                       }),
                   SizedBox(
                     height: 15,

@@ -28,15 +28,17 @@ class GenericScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.primary,
           titleSpacing: 0,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => floactingActionButtonFunction!(),
-          child: Icon(
-            Icons.arrow_forward,
-            color: CustomText.fontColorTopBar,
-            size: 30,
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
+        floatingActionButton: floactingActionButtonFunction != null
+            ? FloatingActionButton(
+                onPressed: () => floactingActionButtonFunction!(),
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: CustomText.fontColorTopBar,
+                  size: 30,
+                ),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              )
+            : null,
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,

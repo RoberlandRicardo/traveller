@@ -27,10 +27,8 @@ class _CadastroState extends State<Cadastro> {
 
   Future<void> register() async {
     var name = _name.split(" ");
-    debugPrint('funçãoooo $name');
-    const localhost = '127.0.0.1';
-    const request = 'http://localhost:8000/traveller/register';
-    debugPrint('testeeeee $request');
+
+    const request = 'http://10.0.2.2:8000/traveller/register';
     http.Response response = await http.post(Uri.parse(request), body: {
       "first_name": name[0],
       "last_name": name[1],
@@ -38,12 +36,10 @@ class _CadastroState extends State<Cadastro> {
       "password": _password,
       "email": _email,
     });
+
     if (response.statusCode == 201) {
-      debugPrint('okkkkkkkkkk $response');
       Navigator.pushReplacementNamed(context, '/login');
-    } else {
-      debugPrint('responseeeeeeeeeeeeeeeee $response');
-    }
+    } else {}
     // try {
     //   http.Response response = await http.post(Uri.parse(request), body: {
     //     "first_name": name[0],
@@ -68,8 +64,9 @@ class _CadastroState extends State<Cadastro> {
     return GenericScreen(
       textFirstButton: "CRIAR CONTA",
       textSecondButton: "EU JÁ POSSUO CONTA",
-      functionFirstButton: () => {register()},
-      functionSecondButton: () => {},
+      functionFirstButton: () => register(),
+      functionSecondButton: () =>
+          {Navigator.pushReplacementNamed(context, '/login')},
       functionHomeButton: () {
         Navigator.pushReplacementNamed(context, '/home');
       },
