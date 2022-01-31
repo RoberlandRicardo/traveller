@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:traveller/app/components/card/card_localizacao.dart';
+import 'package:traveller/app/components/card/card_rota.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel03.dart';
 import 'package:traveller/app/components/input/input_item_bag.dart';
 import 'package:traveller/app/models/item_bag.dart';
-import 'package:traveller/app/components/modal/modal_localizacao.dart';
+import 'package:traveller/app/components/modal/modal_rota.dart';
 import 'package:traveller/app/components/pagination_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
-import 'package:traveller/app/models/localizacao.dart';
+import 'package:traveller/app/models/rota.dart';
 
 class Campos extends StatelessWidget {
   @override
@@ -17,7 +17,7 @@ class Campos extends StatelessWidget {
       title: "Cadastro de viagem",
       floactingActionButtonFunction: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Localizacaos()));
+            context, MaterialPageRoute(builder: (context) => Rotas()));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -76,13 +76,13 @@ class Campos extends StatelessWidget {
   }
 }
 
-class Localizacaos extends StatefulWidget {
+class Rotas extends StatefulWidget {
   @override
-  State<Localizacaos> createState() => _LocalizacaosState();
+  State<Rotas> createState() => _RotasState();
 }
 
-class _LocalizacaosState extends State<Localizacaos> {
-  List<Localizacao> localizacaos = [];
+class _RotasState extends State<Rotas> {
+  List<Rota> rotas = [];
 
   void createRota(BuildContext context) {
     showModalBottomSheet<dynamic>(
@@ -100,10 +100,10 @@ class _LocalizacaosState extends State<Localizacaos> {
         ),
         builder: (builder) {
           return Wrap(children: [
-            ModalLocalizacao(
-              confirmFunction: (localizacao) {
+            ModalRota(
+              confirmFunction: (rota) {
                 setState(() {
-                  localizacaos.add(localizacao);
+                  rotas.add(rota);
                 });
               },
             )
@@ -159,8 +159,8 @@ class _LocalizacaosState extends State<Localizacaos> {
             ),
             Expanded(
                 child: ListView(children: [
-              for (int i = 0; i < localizacaos.length; i++)
-                CardLocalizacao(last: (i == localizacaos.length - 1)),
+              for (int i = 0; i < rotas.length; i++)
+                CardRota(last: (i == rotas.length - 1)),
               SizedBox(
                 height: 20,
               ),

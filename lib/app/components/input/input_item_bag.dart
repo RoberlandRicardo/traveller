@@ -12,7 +12,7 @@ class InputItemBag extends StatelessWidget {
       this.value = value;
       _registered = true;
     } else
-      this.value = new ItemBag(nome: "");
+      this.value = new ItemBag();
   }
 
   @override

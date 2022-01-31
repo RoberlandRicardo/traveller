@@ -2,29 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/input/input_modal_01.dart';
 import 'package:traveller/app/components/modal/generic_modal.dart';
-import 'package:traveller/app/models/localizacao.dart';
+import 'package:traveller/app/models/parada.dart';
+import 'package:traveller/app/models/rota.dart';
 
-class ModalLocalizacao extends StatefulWidget {
-  final Function(Localizacao) confirmFunction;
+class ModalRota extends StatefulWidget {
+  final Function(Rota) confirmFunction;
 
-  const ModalLocalizacao({Key? key, required this.confirmFunction})
-      : super(key: key);
+  const ModalRota({Key? key, required this.confirmFunction}) : super(key: key);
 
   @override
-  State<ModalLocalizacao> createState() => _ModalLocalizacaoState();
+  State<ModalRota> createState() => _ModalRotaState();
 }
 
-class _ModalLocalizacaoState extends State<ModalLocalizacao> {
-  String? _abaModal = "Rota";
-  Localizacao? _localizacao;
+class _ModalRotaState extends State<ModalRota> {
+  String? _abaModal = "Parada";
+  Rota? _rota;
 
   @override
   void initState() {
     super.initState();
 
-    if (_localizacao == null)
+    if (_rota == null)
       setState(() {
-        _localizacao = Localizacao(endereco: "Rua", data: DateTime.now());
+        _rota = Parada();
       });
   }
 
@@ -54,10 +54,10 @@ class _ModalLocalizacaoState extends State<ModalLocalizacao> {
   @override
   Widget build(BuildContext context) {
     return GenericModal(
-      confirmFunction: () => widget.confirmFunction(
-          _localizacao == null ? throw NullThrownError() : _localizacao!),
+      confirmFunction: () => widget
+          .confirmFunction(_rota == null ? throw NullThrownError() : _rota!),
       icon: Icon(
-        _abaModal == "Rota"
+        _abaModal == "Parada"
             ? Icons.location_on
             : _abaModal == "Hospedagem"
                 ? Icons.bed
@@ -75,7 +75,7 @@ class _ModalLocalizacaoState extends State<ModalLocalizacao> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              itemPagination("Rota", context),
+              itemPagination("Parada", context),
               itemPagination("Hospedagem", context),
               itemPagination("Passagem", context),
               SizedBox(
@@ -88,8 +88,8 @@ class _ModalLocalizacaoState extends State<ModalLocalizacao> {
           ),
           SizedBox(
             height: 500,
-            child: _abaModal == "Rota"
-                ? FormRota()
+            child: _abaModal == "Parada"
+                ? FormParada()
                 : _abaModal == "Hospedagem"
                     ? FormHospedagem()
                     : _abaModal == "Passagem"
@@ -102,7 +102,7 @@ class _ModalLocalizacaoState extends State<ModalLocalizacao> {
   }
 }
 
-class FormRota extends StatelessWidget {
+class FormParada extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(

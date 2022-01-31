@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:traveller/app/components/container_text.dart';
 
-class CardRoute extends StatefulWidget {
-  final String route;
+class CardParada extends StatefulWidget {
+  final String parada;
   final String price;
-  CardRoute({required this.route, required this.price});
+  CardParada({required this.parada, required this.price});
 
   @override
-  _CardRouteState createState() => _CardRouteState();
+  _CardParadaState createState() => _CardParadaState();
 }
 
-class _CardRouteState extends State<CardRoute> {
+class _CardParadaState extends State<CardParada> {
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           ContainerText(
-              type: Icons.location_on, title: 'Rota', text: widget.route),
+              type: Icons.location_on, title: 'Rota', text: widget.parada),
           ContainerText(title: 'Preço', text: 'RS ' + widget.price)
         ]));
   }

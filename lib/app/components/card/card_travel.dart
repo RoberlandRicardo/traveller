@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/card/card_accommodation.dart';
-import 'package:traveller/app/components/card/card_route.dart';
+import 'package:traveller/app/components/card/card_parada.dart';
 import 'package:traveller/app/components/card/card_ticket.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
@@ -76,8 +76,8 @@ class _CardTravelState extends State<CardTravel> {
         price: widget.price,
       );
     } else if (widget.type == 'rota') {
-      return CardRoute(
-        route: widget.title,
+      return CardParada(
+        parada: widget.title,
         price: widget.price,
       );
     }

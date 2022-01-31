@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
-class CardLocalizacao extends StatefulWidget {
+class CardRota extends StatefulWidget {
   final bool last;
 
-  CardLocalizacao({required this.last});
+  CardRota({required this.last});
 
   @override
-  _CardLocalizacaoState createState() => _CardLocalizacaoState();
+  _CardRotaState createState() => _CardRotaState();
 }
 
 Widget dashedArrow(BuildContext context) {
@@ -49,7 +49,7 @@ Widget dashedArrow(BuildContext context) {
   );
 }
 
-class _CardLocalizacaoState extends State<CardLocalizacao> {
+class _CardRotaState extends State<CardRota> {
   @override
   Widget build(BuildContext context) {
     return Column(
