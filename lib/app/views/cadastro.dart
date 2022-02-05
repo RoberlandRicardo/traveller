@@ -28,7 +28,7 @@ class _CadastroState extends State<Cadastro> {
   Future<void> register() async {
     var name = _name.split(" ");
 
-    const request = 'http://10.0.2.2:8000/traveller/register';
+    const request = 'https://traveller-back.herokuapp.com/traveller/register';
     http.Response response = await http.post(Uri.parse(request), body: {
       "first_name": name[0],
       "last_name": name[1],
@@ -40,23 +40,6 @@ class _CadastroState extends State<Cadastro> {
     if (response.statusCode == 201) {
       Navigator.pushReplacementNamed(context, '/login');
     } else {}
-    // try {
-    //   http.Response response = await http.post(Uri.parse(request), body: {
-    //     "first_name": name[0],
-    //     "last_name": name[1],
-    //     "username": _username,
-    //     "password": _password,
-    //     "email": _email,
-    //   });
-    //   if (response.statusCode == 201) {
-    //     debugPrint('okkkkkkkkkk $response');
-    //     Navigator.pushReplacementNamed(context, '/login');
-    //   } else {
-    //     debugPrint('responseeeeeeeeeeeeeeeee $response');
-    //   }
-    // } catch (erro) {
-    //   debugPrint('eerooo');
-    // }
   }
 
   @override

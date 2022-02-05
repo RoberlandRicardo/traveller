@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
   String _password = '';
 
   Future<void> login() async {
-    const request = 'http://10.0.2.2:8000/traveller/login';
+    const request = 'https://traveller-back.herokuapp.com/traveller/login';
     http.Response response = await http.post(Uri.parse(request), body: {
       "username": _username,
       "password": _password,
