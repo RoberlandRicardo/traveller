@@ -18,6 +18,13 @@ class Usuario {
 
   Usuario();
 
+  Usuario.fromSessao(
+      {required this.id,
+      required this.username,
+      required this.firstname,
+      this.lastname,
+      required this.email});
+
   Usuario.fromMap(Map map) {
     if (map[idColumn] == null) id = null;
     username = map[usernameColumn];
