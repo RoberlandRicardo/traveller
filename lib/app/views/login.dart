@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/routes/autenticacao.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:traveller/app/styles/custom_text.dart';
@@ -19,15 +21,14 @@ class _LoginState extends State<Login> {
   String _password = '';
 
   Future<void> login() async {
-    const request = 'http://10.0.2.2:8000/traveller/login';
-    http.Response response = await http.post(Uri.parse(request), body: {
-      "username": _username,
-      "password": _password,
-    });
+    var response = await Api.enviarRequisicao(
+        method: "POST",
+        endpoint: LOGIN(),
+        data: {'username': _username, 'password': _password});
 
-    if (response.statusCode == 201) {
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
-    }
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+    } else {}
   }
 
   @override
