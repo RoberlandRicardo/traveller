@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/util/location.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -22,16 +23,10 @@ class _HomeState extends State<Home> {
   String _countDays = '2 meses, 7 dias e 10 horas';
   String tripName = 'Rio de Janeiro';
 
-  @protected
-  @mustCallSuper
+  @override
   void initState() {
-    calcDate();
-  }
-
-  infoTravel() {}
-
-  calcDate() {
-    setState(() {});
+    super.initState();
+    // getLocation().then((value) => print(value));
   }
 
   @override

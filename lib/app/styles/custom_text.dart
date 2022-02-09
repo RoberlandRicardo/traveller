@@ -19,6 +19,7 @@ class CustomText extends TextTheme {
   static final double fontSizeInputModal = 16;
   static final double fontSizeBody = 16;
   static final double fontSizeTopBar = 20;
+  static final double fontSizeMinCard = 14;
 
   static final TextStyle label = TextStyle(
       fontFamily: fontFamily,
@@ -56,6 +57,12 @@ class CustomText extends TextTheme {
     fontSize: fontSizeButton,
     color: fontColorOrange,
     fontWeight: FontWeight.w700,
+  );
+
+  static final TextStyle bodyTextMinCard = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeMinCard,
+    color: fontColor,
   );
 
   CustomText()

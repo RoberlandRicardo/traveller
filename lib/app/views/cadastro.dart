@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:http/http.dart' as http;
+import 'package:traveller/app/stores/actions.dart';
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:traveller/app/stores/app_state.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({Key? key}) : super(key: key);
@@ -28,8 +32,8 @@ class _CadastroState extends State<Cadastro> {
   Future<void> register() async {
     var name = _name.split(" ");
 
-    const request = 'https://traveller-back.herokuapp.com/traveller/register';
-    http.Response response = await http.post(Uri.parse(request), body: {
+    final response =
+        await Api.enviarRequisicao(method: 'POST', endpoint: "register", data: {
       "first_name": name[0],
       "last_name": name[1],
       "username": _username,
@@ -37,7 +41,8 @@ class _CadastroState extends State<Cadastro> {
       "email": _email,
     });
 
-    if (response.statusCode == 201) {
+    if (response == null) {
+    } else if (response.statusCode == 201) {
       Navigator.pushReplacementNamed(context, '/login');
     } else {}
   }
@@ -51,7 +56,8 @@ class _CadastroState extends State<Cadastro> {
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/login')},
       functionHomeButton: () {
-        Navigator.pushReplacementNamed(context, '/home');
+        appStore.dispatcher(action: AppAction.activateOffAuthentication);
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
       },
       child: FractionallySizedBox(
         widthFactor: 0.9,

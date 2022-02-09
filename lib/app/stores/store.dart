@@ -7,7 +7,7 @@ class Store<Action, State> extends ChangeNotifier {
   Store({required initialState, required this.reducer}) : _state = initialState;
   State get state => _state;
 
-  void dispatcher(Action action, dynamic payload) {
+  void dispatcher({required Action action, dynamic payload}) {
     _state = reducer(state, action, payload);
     notifyListeners();
   }

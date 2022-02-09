@@ -1,1 +1,11 @@
-enum AppAction { setSessao, removeSessao, setToken }
+enum AppAction {
+  // SESSAO ACTIONS
+  setSessao,
+  removeSessao,
+  setToken,
+  // MODO OFF AUTHENTICATION ACTIONS
+  activateOffAuthentication,
+  desactivateOffAuthentication,
+  // LISTA TRAVELS ACTIONS
+  setListTravels,
+}

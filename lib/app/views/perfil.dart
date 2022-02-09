@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/stores/actions.dart';
+import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
 class Perfil extends StatelessWidget {
-  String state = 'not_auth';
   static const List<String> _buttonNames = <String>[
     'Ajuda',
     'Alterar meus dados',
@@ -66,7 +67,10 @@ class Perfil extends StatelessWidget {
     return GenericScreen(
       currendIndex: 3,
       child: SingleChildScrollView(
-          child: state == 'auth' ? auth(context) : notAuth(context)),
+          child: appStore.state.offAuthentication != null &&
+                  appStore.state.offAuthentication == true
+              ? notAuth(context)
+              : auth(context)),
     );
   }
 
@@ -129,7 +133,7 @@ class Perfil extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 50,
+          height: 35,
         ),
         Container(
           child: Column(
@@ -146,8 +150,8 @@ class Perfil extends StatelessWidget {
         ),
         SvgPicture.asset(
           'assets/svgs/not_auth.svg',
-          width: 320.0,
-          height: 320.0,
+          width: 300.0,
+          height: 300.0,
         ),
         SizedBox(
           height: 40,
@@ -158,17 +162,25 @@ class Perfil extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Clique aqui ',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.bold)),
-                  Text('e crie uma conta para salvar seus dados,',
+                  GestureDetector(
+                    onTap: () {
+                      appStore.dispatcher(
+                          action: AppAction.desactivateOffAuthentication);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/login', (_) => false);
+                    },
+                    child: Text("Clique aqui ",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  Text("para voltar para tela de login",
                       style: Theme.of(context).textTheme.bodyText1)
                 ],
               ),
-              Text('personalizar seu perfil e visualizar o feed.',
-                  style: Theme.of(context).textTheme.bodyText1)
+              Text("e faça a autenticação para salvar seus dados.",
+                  style: Theme.of(context).textTheme.bodyText1),
             ],
           ),
         ),

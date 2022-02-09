@@ -1,104 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:traveller/app/components/card/card_accommodation.dart';
-import 'package:traveller/app/components/card/card_parada.dart';
-import 'package:traveller/app/components/card/card_ticket.dart';
 import 'package:traveller/app/styles/custom_text.dart';
+import 'package:traveller/app/util/extensionFunctions.dart';
 
-class CardTravel extends StatefulWidget {
-  final String type;
-  final String? subType;
-  final String title;
-  final String? label1;
-  final String? label2;
-  final String price;
+class CardTravel extends StatelessWidget {
+  final String? titulo;
+  final DateTime data;
 
-  CardTravel(
-      {required this.type,
-      this.subType,
-      required this.title,
-      this.label1,
-      this.label2,
-      required this.price});
-
-  @override
-  _CardTravelState createState() => _CardTravelState();
-}
-
-class _CardTravelState extends State<CardTravel> {
-  String _subType = '';
-  String _label1 = '';
-  String _label2 = '';
+  CardTravel({this.titulo, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
-    if (widget.type == 'passagem') {
-      return cardWidget(screenHeight, bodyTextTicket);
-    } else {
-      return cardWidget(screenHeight, bodyTextAccommodationAndRoute);
-    }
-  }
-
-  Widget cardWidget(double screenHeight, Function bodyText) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 90,
-            height: screenHeight * 0.14,
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(196, 196, 196, 1),
-              borderRadius: BorderRadius.circular(16.0),
+    return FractionallySizedBox(
+      widthFactor: 0.95,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: 60),
+        child: Card(
+          color: Color.fromRGBO(225, 225, 225, 1),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: GestureDetector(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Text(
+                      titulo ?? "[Viagem sem titulo...]",
+                      style: Theme.of(context).textTheme.bodyText1,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 7,
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 1,
+                    child: Text(
+                      data.toStringBR(format: 'date'),
+                      style: CustomText.bodyTextMinCard,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          Column(children: [bodyText()])
-        ],
+        ),
       ),
-    );
-  }
-
-  bodyTextAccommodationAndRoute() {
-    if (widget.type == 'hospedagem') {
-      setState(() {
-        _label1 = widget.label1!;
-        _label2 = widget.label2!;
-      });
-      return CardAccommodation(
-        accommodation: widget.title,
-        checkIn: _label1,
-        checkOut: _label2,
-        price: widget.price,
-      );
-    } else if (widget.type == 'rota') {
-      return CardParada(
-        parada: widget.title,
-        price: widget.price,
-      );
-    }
-  }
-
-  bodyTextTicket() {
-    setState(() {
-      if (widget.subType == 'indo') {
-        _subType = 'Indo';
-      } else {
-        _subType = 'Voltando';
-      }
-      _label1 = widget.label1!;
-      _label2 = widget.label2!;
-    });
-    return CardTicket(
-      type: _subType,
-      place: widget.title,
-      going: _label1,
-      arrival: _label2,
-      price: widget.price,
     );
   }
 }

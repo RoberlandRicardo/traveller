@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/api/routes/autenticacao.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
+import 'package:traveller/app/stores/actions.dart';
+import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,13 +25,19 @@ class _LoginState extends State<Login> {
   String _password = '';
 
   Future<void> login() async {
-    var response = await Api.enviarRequisicao(
+    final response = await Api.enviarRequisicao(
         method: "POST",
         endpoint: LOGIN(),
         data: {'username': _username, 'password': _password});
 
     if (response == null) {
     } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      final Map<String, dynamic> bodyResponse =
+          Map.from(jsonDecode(response.body));
+
+      appStore.dispatcher(
+          action: AppAction.setToken, payload: bodyResponse["token"]);
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
     } else {}
   }
 
@@ -40,6 +50,7 @@ class _LoginState extends State<Login> {
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/cadastro')},
       functionHomeButton: () {
+        appStore.dispatcher(action: AppAction.activateOffAuthentication);
         Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
       },
       child: FractionallySizedBox(

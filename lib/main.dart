@@ -31,7 +31,7 @@ class App extends StatelessWidget {
         '/login': (context) => Login(),
         '/cadastro': (context) => Cadastro(),
         '/home': (context) => Home(),
-        '/travel': (context) => Travel(),
+        '/travel': (context) => PageTravels(),
         '/perfil': (context) => Perfil(),
         '/cadastroTravel': (context) => Campos(),
       },

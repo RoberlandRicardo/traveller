@@ -1,4 +1,4 @@
-import 'package:traveller/app/views/travel.dart';
+import 'package:traveller/app/models/travel.dart';
 
 class ItemBag {
   static const String travelColumn = 'travel';

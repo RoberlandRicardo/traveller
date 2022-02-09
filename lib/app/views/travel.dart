@@ -1,60 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/components/card/card_travel.dart';
+import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/components/card/card_rota_travel.dart';
+import 'package:traveller/app/models/travel.dart';
+import 'package:traveller/app/stores/app_state.dart';
+import 'package:traveller/app/styles/custom_text.dart';
+import 'package:traveller/app/util/extensionFunctions.dart';
 
-class Travel extends StatefulWidget {
-  const Travel({Key? key}) : super(key: key);
+class PageTravels extends StatefulWidget {
+  const PageTravels({Key? key}) : super(key: key);
 
   @override
-  _TravelState createState() => _TravelState();
+  _PageTravelsState createState() => _PageTravelsState();
 }
 
-class _TravelState extends State<Travel> {
-  String state = 'not_travel';
-  // String _textButton = 'CADASTRAR VIAGEM';
+class _PageTravelsState extends State<PageTravels> {
+  Travel? activeTravel;
+
+  @override
+  void initState() {
+    super.initState();
+    activeTravel =
+        appStore.state.listTravels.firstWhereOrNull((travel) => travel.ativo);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
       currendIndex: 1,
       child: Scaffold(
-        bottomNavigationBar: Material(
-          color: Color.fromRGBO(245, 170, 82, 1),
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, '/cadastroTravel');
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(color: Color.fromRGBO(5, 41, 60, 1))),
-              ),
-              height: kToolbarHeight,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  state == 'travel'
-                      ? 'CADASTRAR VIAGEM'
-                      : 'ADICIONAIS MAIS ITENS',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Color.fromRGBO(5, 41, 60, 1)),
+          bottomNavigationBar: Material(
+            color: Color.fromRGBO(245, 170, 82, 1),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/cadastroTravel');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                      top: BorderSide(color: Color.fromRGBO(5, 41, 60, 1))),
+                ),
+                height: kToolbarHeight,
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    activeTravel == null
+                        ? 'CADASTRAR VIAGEM'
+                        : 'ADICIONAIS MAIS ITENS',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Color.fromRGBO(5, 41, 60, 1)),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        backgroundColor: Color.fromRGBO(245, 170, 82, 1),
-        body: state == 'travel' ? getWidgetNotTravel() : getWidgetTravel(),
-      ),
+          backgroundColor: Color.fromRGBO(245, 170, 82, 1),
+          body: activeTravel == null ? getWidgetNotTravel() : getWidgetTravel(),
+          drawer: getDrawer()),
     );
   }
 
   @override
   bool get wantKeepAlive => throw UnimplementedError();
+
+  Drawer getDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          Container(
+            height: 60,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black26))),
+              child: Text(
+                "Viagens cadastradas",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: CustomText.fontColor,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   getWidgetNotTravel() {
     return Container(
@@ -114,34 +148,6 @@ class _TravelState extends State<Travel> {
                         fontSize: 24,
                       ),
                     ))),
-            CardTravel(
-              type: 'hospedagem',
-              title: 'Hotel Litoral',
-              label1: '13/03/2022 - 12:00',
-              label2: '17/03/2022 - 14:00',
-              price: '900,00',
-            ),
-            CardTravel(
-              type: 'rota',
-              title: 'Passeio de barco',
-              price: '80,00',
-            ),
-            CardTravel(
-              type: 'passagem',
-              subType: 'indo',
-              title: 'Rio de Janeiro, RJ',
-              label1: '13/03/2022 - 05:00',
-              label2: '13/03/2022 - 08:00',
-              price: '1.200,00',
-            ),
-            CardTravel(
-              type: 'passagem',
-              subType: 'voltando',
-              title: 'São Gonçalo, RN',
-              label1: '17/03/2022 - 05:00',
-              label2: '17/03/2022 - 08:00',
-              price: '1.200,00',
-            )
           ],
         ));
   }

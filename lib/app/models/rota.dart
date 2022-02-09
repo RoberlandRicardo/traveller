@@ -1,5 +1,5 @@
 import 'package:traveller/app/models/endereco.dart';
-import 'package:traveller/app/views/travel.dart';
+import 'package:traveller/app/models/travel.dart';
 
 abstract class Rota {
   static const String idColumn = 'id';
