@@ -12,4 +12,6 @@ enum AppAction {
   initTravelCadastro,
   setTravelCadastro,
   closeTravelCadastro,
+  // LOCATIONS USER ACTIONS
+  setLocationUser,
 }

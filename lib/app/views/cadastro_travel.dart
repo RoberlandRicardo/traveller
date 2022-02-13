@@ -189,6 +189,7 @@ class _RotasState extends State<Rotas> {
                 travel.rotas.add(rota);
                 appStore.dispatcher(
                     action: AppAction.setTravelCadastro, payload: travel);
+                setState(() {});
               },
             )
           ]);
@@ -252,7 +253,8 @@ class _RotasState extends State<Rotas> {
                   i++)
                 CardRota(
                     last:
-                        (i == appStore.state.travelCadastro!.rotas.length - 1)),
+                        (i == appStore.state.travelCadastro!.rotas.length - 1),
+                    rota: appStore.state.travelCadastro!.rotas[i]),
               SizedBox(
                 height: 20,
               ),
@@ -276,8 +278,6 @@ class Bag extends StatefulWidget {
 }
 
 class _BagState extends State<Bag> {
-  List<ItemBag> itemsBag = [];
-
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
@@ -311,12 +311,16 @@ class _BagState extends State<Bag> {
                   children: [
                     TextSpan(text: "Você esta indo em "),
                     TextSpan(
-                        text: "00/00/0000 ", style: CustomText.buttonOrange),
+                        text: appStore.state.travelCadastro!.dataInicio
+                            .toStringDateBR(),
+                        style: CustomText.buttonOrange),
                     TextSpan(
-                      text: "e voltando em ",
+                      text: " e voltando em ",
                     ),
                     TextSpan(
-                        text: "00/00/0000", style: CustomText.buttonOrange),
+                        text: appStore.state.travelCadastro!.dataFim
+                            .toStringDateBR(),
+                        style: CustomText.buttonOrange),
                     TextSpan(
                       text: ".",
                     ),
@@ -325,13 +329,14 @@ class _BagState extends State<Bag> {
             SizedBox(
               height: 20,
             ),
-            for (var itemBag in itemsBag)
+            for (var itemBag in appStore.state.travelCadastro!.itemsBag)
               Column(
                 children: [
                   InputItemBag(
                       value: itemBag,
                       action: (value) => setState(() {
-                            itemsBag.remove(value);
+                            appStore.state.travelCadastro!.itemsBag
+                                .remove(value);
                           })),
                   SizedBox(
                     height: 12,
@@ -340,7 +345,10 @@ class _BagState extends State<Bag> {
               ),
             InputItemBag(
               action: (value) => setState(() {
-                itemsBag.add(value);
+                Travel? travel = appStore.state.travelCadastro;
+                travel!.itemsBag.add(value);
+                appStore.dispatcher(
+                    action: AppAction.setTravelCadastro, payload: travel);
               }),
             ),
             SizedBox(

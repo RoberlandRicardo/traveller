@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:traveller/app/models/rota.dart';
 import 'package:traveller/app/styles/custom_text.dart';
+import 'package:traveller/app/util/extensionFunctions.dart';
 
 class CardRota extends StatefulWidget {
   final bool last;
+  final Rota rota;
 
-  CardRota({required this.last});
+  CardRota({required this.last, required this.rota});
 
   @override
   _CardRotaState createState() => _CardRotaState();
@@ -73,7 +76,7 @@ class _CardRotaState extends State<CardRota> {
                       FractionallySizedBox(
                         widthFactor: 1,
                         child: Text(
-                          "Localização",
+                          widget.rota.endereco.toString(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: CustomText.fontSizeh4,
@@ -83,7 +86,7 @@ class _CardRotaState extends State<CardRota> {
                       FractionallySizedBox(
                         widthFactor: 1,
                         child: Text(
-                          "00/00/0000 00:00:00",
+                          widget.rota.data.toStringBR(format: 'datetime'),
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               fontSize: CustomText.fontSizeBody,

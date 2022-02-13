@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/models/endereco.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/stores/store.dart';
@@ -21,7 +22,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String state = 'not_travel';
-  String location = '';
   String name = 'Fulano';
   String _coin = '5,23';
   String _hour = '17:24';
@@ -51,6 +51,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     updateCity();
+    // getUser();
   }
 
   updateCity() async {
@@ -62,12 +63,11 @@ class _HomeState extends State<Home> {
         position.longitude,
       );
       setState(() {
-        location = placemarks[0].subAdministrativeArea! +
-            ', ' +
-            placemarks[0].country!;
+        Endereco endUser = Endereco.fromPlaceMark(placemarks[0], position);
+        appStore.dispatcher(
+            action: AppAction.setLocationUser, payload: endUser);
       });
     } catch (err) {}
-    getUser();
   }
 
   @override
@@ -89,7 +89,11 @@ class _HomeState extends State<Home> {
                   child: Row(children: [
                     Icon(Icons.location_on,
                         color: Color.fromRGBO(244, 54, 27, 1)),
-                    Text(location)
+                    Text(appStore.state.locationUser == null
+                        ? "Carregando localização..."
+                        : appStore.state.locationUser!.cidade +
+                            ", " +
+                            appStore.state.locationUser!.pais)
                   ]),
                 ),
                 Spacer(),

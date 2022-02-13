@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:google_maps_webservice/geocoding.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:osm_nominatim/osm_nominatim.dart';
+import 'package:traveller/app/api/consts.dart';
+import 'package:traveller/app/models/endereco.dart';
+import 'package:traveller/app/models/hospedagem.dart';
+import 'package:traveller/app/models/travel.dart';
+import 'package:traveller/app/stores/app_state.dart';
+import 'package:traveller/app/views/select_place.dart';
 import 'package:traveller/app/components/input/input_modal_01.dart';
 import 'package:traveller/app/components/modal/generic_modal.dart';
 import 'package:traveller/app/models/parada.dart';
 import 'package:traveller/app/models/rota.dart';
-import 'package:traveller/app/views/map_select_place.dart';
 
 class ModalRota extends StatefulWidget {
   final Function(Rota) confirmFunction;
@@ -46,6 +55,14 @@ class _ModalRotaState extends State<ModalRota> {
               onChanged: (String? value) {
                 setState(() {
                   _abaModal = value;
+                  switch (value) {
+                    case 'Parada':
+                      _rota = Parada();
+                      break;
+                    case 'Hospedagem':
+                      _rota = Hospedagem();
+                      break;
+                  }
                 });
               },
             )),
@@ -97,9 +114,9 @@ class _ModalRotaState extends State<ModalRota> {
             child: _abaModal == "Parada"
                 ? FormParada(updateRota: updateRota, rota: _rota!)
                 : _abaModal == "Hospedagem"
-                    ? FormHospedagem()
+                    ? FormHospedagem(updateRota: updateRota, rota: _rota!)
                     : _abaModal == "Passagem"
-                        ? FormPassagem()
+                        ? FormPassagem(updateRota: updateRota, rota: _rota!)
                         : SizedBox(),
           ),
         ],
@@ -133,13 +150,15 @@ class _FormParadaState extends State<FormParada> {
     return Column(
       children: [
         InputModal(
-            controller: localizacaoController,
-            label: "Localização",
-            placeholder: "Digite a localização da sua hospedagem",
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MapSelectPlace()));
-            }),
+          controller: localizacaoController,
+          label: "Localização",
+          placeholder: "Digite a localização da sua hospedagem",
+          type: 'location',
+          onChangedLocation: (Place place) {
+            Endereco end = Endereco.fromPlace(place);
+            widget.rota.endereco = end;
+          },
+        ),
         SizedBox(
           height: 15,
         ),
@@ -188,6 +207,12 @@ class _FormParadaState extends State<FormParada> {
 }
 
 class FormHospedagem extends StatefulWidget {
+  final Function updateRota;
+  Rota rota;
+
+  FormHospedagem({Key? key, required this.updateRota, required this.rota})
+      : super(key: key);
+
   @override
   State<FormHospedagem> createState() => _FormHospedagemState();
 }
@@ -219,6 +244,12 @@ class _FormHospedagemState extends State<FormHospedagem> {
           controller: dataInicioController,
           label: "Check in",
           placeholder: "Selecione o dia do check in",
+          type: 'date',
+          onChangedDateTime: (DateTime date) {
+            DateTime dateTime = DateTime(date.year, date.month, date.day,
+                widget.rota.data.hour, widget.rota.data.minute);
+            widget.rota.data = dateTime;
+          },
         ),
         InputModal(
           controller: horarioInicioController,
@@ -256,6 +287,12 @@ class _FormHospedagemState extends State<FormHospedagem> {
 }
 
 class FormPassagem extends StatefulWidget {
+  final Function updateRota;
+  Rota rota;
+
+  FormPassagem({Key? key, required this.updateRota, required this.rota})
+      : super(key: key);
+
   @override
   State<FormPassagem> createState() => _FormPassagemState();
 }
