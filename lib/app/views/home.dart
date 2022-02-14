@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/stores/actions.dart';
+import 'package:traveller/app/stores/app_state.dart';
+import 'package:traveller/app/stores/store.dart';
 import 'package:traveller/app/util/location.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +21,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String state = 'not_travel';
   String location = 'Rio Grande do Norte, Brasil';
-  String name = 'Fulano';
+  String name = '';
   String _coin = '5,23';
   String _hour = '17:24';
   String _date = '02/01/2022';
@@ -23,10 +30,26 @@ class _HomeState extends State<Home> {
   String _countDays = '2 meses, 7 dias e 10 horas';
   String tripName = 'Rio de Janeiro';
 
+  Future<void> getUser() async {
+    final response = await Api.enviarRequisicao(
+        method: "GET",
+        endpoint: INFO_USUARIO(),
+        headers: {'Authorization': 'Token ' + appStore.state.sessao!.token});
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      final Map<String, dynamic> bodyResponse =
+          Map.from(jsonDecode(response.body));
+
+      setState(() {
+        name = bodyResponse["first_name"];
+      });
+    } else {}
+  }
+
   @override
   void initState() {
     super.initState();
-    // getLocation().then((value) => print(value));
+    getUser();
   }
 
   @override
@@ -206,15 +229,20 @@ class _HomeState extends State<Home> {
         child: Column(children: [
           Text(
             'Você não possui nenhuma viagem ativa no momento.',
+            textAlign: TextAlign.center,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Clique aqui",
-                style: TextStyle(
-                    color: Color.fromRGBO(244, 54, 27, 1),
-                    fontWeight: FontWeight.bold),
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Color.fromRGBO(244, 54, 27, 1),
+                  padding: const EdgeInsets.all(0.0),
+                  textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                onPressed: () {},
+                child: const Text('Clique aqui'),
               ),
               Text(" e cadastre uma nova.")
             ],
