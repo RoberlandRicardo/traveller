@@ -7,6 +7,7 @@ import 'package:traveller/app/components/input/input_item_bag.dart';
 import 'package:traveller/app/models/item_bag.dart';
 import 'package:traveller/app/components/modal/modal_rota.dart';
 import 'package:traveller/app/components/pagination_01.dart';
+import 'package:traveller/app/models/sessao.dart';
 import 'package:traveller/app/models/travel.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
@@ -68,6 +69,7 @@ class _CamposState extends State<Campos> {
                 onChanged: (string) {
                   Travel travelCadastro = appStore.state.travelCadastro!;
                   travelCadastro.titulo = string;
+
                   appStore.dispatcher(
                       action: AppAction.setTravelCadastro,
                       payload: travelCadastro);
