@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/util/location.dart';
+import 'package:geocoding/geocoding.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String state = 'not_travel';
-  String location = 'Rio Grande do Norte, Brasil';
+  String location = '';
   String name = 'Fulano';
   String _coin = '5,23';
   String _hour = '17:24';
@@ -26,7 +27,23 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // getLocation().then((value) => print(value));
+    updateCity();
+  }
+
+  updateCity() async {
+    var position = await getLocation();
+
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      setState(() {
+        location = placemarks[0].subAdministrativeArea! +
+            ', ' +
+            placemarks[0].country!;
+      });
+    } catch (err) {}
   }
 
   @override
@@ -205,16 +222,21 @@ class _HomeState extends State<Home> {
       return Container(
         child: Column(children: [
           Text(
-            'Você não possui nenhuma viagem ativa no momento.',
+            'Você não possui nenhuma viagem futura no momento.',
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Clique aqui",
-                style: TextStyle(
-                    color: Color.fromRGBO(244, 54, 27, 1),
-                    fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/cadastroTravel');
+                },
+                child: Text(
+                  "Clique aqui",
+                  style: TextStyle(
+                      color: Color.fromRGBO(244, 54, 27, 1),
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               Text(" e cadastre uma nova.")
             ],

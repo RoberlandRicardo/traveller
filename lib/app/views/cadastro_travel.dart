@@ -7,10 +7,35 @@ import 'package:traveller/app/components/input/input_item_bag.dart';
 import 'package:traveller/app/models/item_bag.dart';
 import 'package:traveller/app/components/modal/modal_rota.dart';
 import 'package:traveller/app/components/pagination_01.dart';
+import 'package:traveller/app/models/travel.dart';
+import 'package:traveller/app/stores/actions.dart';
+import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 import 'package:traveller/app/models/rota.dart';
+import 'package:traveller/app/util/extensionFunctions.dart';
 
-class Campos extends StatelessWidget {
+class Campos extends StatefulWidget {
+  @override
+  State<Campos> createState() => _CamposState();
+}
+
+class _CamposState extends State<Campos> {
+  final TextEditingController tituloControler = TextEditingController();
+  final TextEditingController dataInicioControler = TextEditingController();
+  final TextEditingController dataFimControler = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    appStore.dispatcher(action: AppAction.initTravelCadastro);
+  }
+
+  @override
+  void dispose() {
+    appStore.dispatcher(action: AppAction.closeTravelCadastro);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
@@ -38,7 +63,15 @@ class Campos extends StatelessWidget {
                 height: 25,
               ),
               TextField(
+                controller: tituloControler,
                 style: CustomText.input,
+                onChanged: (string) {
+                  Travel travelCadastro = appStore.state.travelCadastro!;
+                  travelCadastro.titulo = string;
+                  appStore.dispatcher(
+                      action: AppAction.setTravelCadastro,
+                      payload: travelCadastro);
+                },
                 decoration: InputDecoration(
                     hintText: "Nome viagem",
                     enabledBorder: UnderlineInputBorder(
@@ -55,14 +88,64 @@ class Campos extends StatelessWidget {
                 height: 25,
               ),
               TextField(
+                controller: dataInicioControler,
                 style: CustomText.input,
+                showCursor: true,
+                readOnly: true,
+                onTap: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: appStore.state.travelCadastro!.dataInicio,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(DateTime.now().year + 7),
+                    builder: (context, child) {
+                      return Theme(
+                        data: ThemeData(),
+                        child: child!,
+                      );
+                    },
+                  ).then((value) {
+                    Travel travelCadastro = appStore.state.travelCadastro!;
+                    travelCadastro.dataInicio = value ?? DateTime.now();
+                    appStore.dispatcher(
+                        action: AppAction.setTravelCadastro,
+                        payload: travelCadastro);
+                    dataInicioControler.text =
+                        value.toStringBR(format: 'date') ?? "";
+                  });
+                },
                 decoration: InputDecoration(
                     hintText: "Inicio da viagem",
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: CustomText.fontColor))),
               ),
               TextField(
+                controller: dataFimControler,
                 style: CustomText.input,
+                showCursor: true,
+                readOnly: true,
+                onTap: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: appStore.state.travelCadastro!.dataInicio,
+                    firstDate: appStore.state.travelCadastro!.dataInicio,
+                    lastDate: DateTime(DateTime.now().year + 7),
+                    builder: (context, child) {
+                      return Theme(
+                        data: ThemeData(),
+                        child: child!,
+                      );
+                    },
+                  ).then((value) {
+                    Travel travelCadastro = appStore.state.travelCadastro!;
+                    travelCadastro.dataInicio = value ?? DateTime.now();
+                    appStore.dispatcher(
+                        action: AppAction.setTravelCadastro,
+                        payload: travelCadastro);
+                    dataFimControler.text =
+                        value.toStringBR(format: 'date') ?? "";
+                  });
+                },
                 decoration: InputDecoration(
                     hintText: "Saida da viagem",
                     enabledBorder: UnderlineInputBorder(
@@ -82,8 +165,6 @@ class Rotas extends StatefulWidget {
 }
 
 class _RotasState extends State<Rotas> {
-  List<Rota> rotas = [];
-
   void createRota(BuildContext context) {
     showModalBottomSheet<dynamic>(
         isScrollControlled: true,
@@ -102,9 +183,10 @@ class _RotasState extends State<Rotas> {
           return Wrap(children: [
             ModalRota(
               confirmFunction: (rota) {
-                setState(() {
-                  rotas.add(rota);
-                });
+                Travel travel = appStore.state.travelCadastro!;
+                travel.rotas.add(rota);
+                appStore.dispatcher(
+                    action: AppAction.setTravelCadastro, payload: travel);
               },
             )
           ]);
@@ -143,12 +225,16 @@ class _RotasState extends State<Rotas> {
                   children: [
                     TextSpan(text: "Você esta indo em "),
                     TextSpan(
-                        text: "00/00/0000 ", style: CustomText.buttonOrange),
+                        text: appStore.state.travelCadastro!.dataInicio
+                            .toStringDateBR(),
+                        style: CustomText.buttonOrange),
                     TextSpan(
-                      text: "e voltando em ",
+                      text: " e voltando em ",
                     ),
                     TextSpan(
-                        text: "00/00/0000", style: CustomText.buttonOrange),
+                        text: appStore.state.travelCadastro!.dataFim
+                            .toStringDateBR(),
+                        style: CustomText.buttonOrange),
                     TextSpan(
                       text: ".",
                     ),
@@ -159,8 +245,12 @@ class _RotasState extends State<Rotas> {
             ),
             Expanded(
                 child: ListView(children: [
-              for (int i = 0; i < rotas.length; i++)
-                CardRota(last: (i == rotas.length - 1)),
+              for (int i = 0;
+                  i < appStore.state.travelCadastro!.rotas.length;
+                  i++)
+                CardRota(
+                    last:
+                        (i == appStore.state.travelCadastro!.rotas.length - 1)),
               SizedBox(
                 height: 20,
               ),

@@ -4,6 +4,7 @@ import 'package:traveller/app/components/input/input_modal_01.dart';
 import 'package:traveller/app/components/modal/generic_modal.dart';
 import 'package:traveller/app/models/parada.dart';
 import 'package:traveller/app/models/rota.dart';
+import 'package:traveller/app/views/map_select_place.dart';
 
 class ModalRota extends StatefulWidget {
   final Function(Rota) confirmFunction;
@@ -21,11 +22,16 @@ class _ModalRotaState extends State<ModalRota> {
   @override
   void initState() {
     super.initState();
-
     if (_rota == null)
       setState(() {
         _rota = Parada();
       });
+  }
+
+  updateRota(Rota rota) {
+    setState(() {
+      _rota = rota;
+    });
   }
 
   Widget itemPagination(String title, BuildContext context) {
@@ -89,7 +95,7 @@ class _ModalRotaState extends State<ModalRota> {
           SizedBox(
             height: 500,
             child: _abaModal == "Parada"
-                ? FormParada()
+                ? FormParada(updateRota: updateRota, rota: _rota!)
                 : _abaModal == "Hospedagem"
                     ? FormHospedagem()
                     : _abaModal == "Passagem"
@@ -102,34 +108,76 @@ class _ModalRotaState extends State<ModalRota> {
   }
 }
 
-class FormParada extends StatelessWidget {
+class FormParada extends StatefulWidget {
+  final Function updateRota;
+  Rota rota;
+
+  FormParada({Key? key, required this.updateRota, required this.rota})
+      : super(key: key);
+
+  @override
+  State<FormParada> createState() => _FormParadaState();
+}
+
+class _FormParadaState extends State<FormParada> {
+  final TextEditingController localizacaoController = TextEditingController();
+
+  final TextEditingController dataController = TextEditingController();
+
+  final TextEditingController horarioController = TextEditingController();
+
+  final TextEditingController precoController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InputModal(
+            controller: localizacaoController,
             label: "Localização",
             placeholder: "Digite a localização da sua hospedagem",
-            onChanged: (value) {}),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MapSelectPlace()));
+            }),
         SizedBox(
           height: 15,
         ),
         InputModal(
+          controller: dataController,
           label: "Data de chegada",
           placeholder: "Selecione o dia do check in",
-          onChanged: (value) {},
+          type: 'date',
+          onChangedDateTime: (DateTime date) {
+            DateTime dateTime = DateTime(date.year, date.month, date.day,
+                widget.rota.data.hour, widget.rota.data.minute);
+            widget.rota.data = dateTime;
+          },
         ),
         InputModal(
+          controller: horarioController,
           placeholder: "Selecione o horário do check in",
-          onChanged: (value) {},
+          type: 'time',
+          onChangedDateTime: (DateTime date) {
+            DateTime dateTime = DateTime(
+                widget.rota.data.year,
+                widget.rota.data.month,
+                widget.rota.data.day,
+                date.hour,
+                date.minute);
+            widget.rota.data = dateTime;
+          },
         ),
         SizedBox(
           height: 15,
         ),
         InputModal(
+          controller: precoController,
           label: "Preço",
           placeholder: "Digite o custo do local (opcional)",
-          onChanged: (value) {},
+          onChanged: (value) {
+            widget.rota.preco = value;
+          },
         ),
         SizedBox(
           height: 15,
@@ -139,12 +187,28 @@ class FormParada extends StatelessWidget {
   }
 }
 
-class FormHospedagem extends StatelessWidget {
+class FormHospedagem extends StatefulWidget {
+  @override
+  State<FormHospedagem> createState() => _FormHospedagemState();
+}
+
+class _FormHospedagemState extends State<FormHospedagem> {
+  final TextEditingController localizacaoController = TextEditingController();
+
+  final TextEditingController dataInicioController = TextEditingController();
+
+  final TextEditingController horarioInicioController = TextEditingController();
+
+  final TextEditingController dataFimController = TextEditingController();
+
+  final TextEditingController horarioFimController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InputModal(
+            controller: localizacaoController,
             label: "Localização",
             placeholder: "Digite a localização da sua hospedagem",
             onChanged: (value) {}),
@@ -152,11 +216,12 @@ class FormHospedagem extends StatelessWidget {
           height: 15,
         ),
         InputModal(
+          controller: dataInicioController,
           label: "Check in",
           placeholder: "Selecione o dia do check in",
-          onChanged: (value) {},
         ),
         InputModal(
+          controller: horarioInicioController,
           placeholder: "Selecione o horário do check in",
           onChanged: (value) {},
         ),
@@ -164,11 +229,13 @@ class FormHospedagem extends StatelessWidget {
           height: 15,
         ),
         InputModal(
+          controller: dataFimController,
           label: "Check out",
           placeholder: "Selecione o dia do check out",
           onChanged: (value) {},
         ),
         InputModal(
+          controller: horarioFimController,
           placeholder: "Selecione o horário do check out",
           onChanged: (value) {},
         ),
@@ -188,7 +255,12 @@ class FormHospedagem extends StatelessWidget {
   }
 }
 
-class FormPassagem extends StatelessWidget {
+class FormPassagem extends StatefulWidget {
+  @override
+  State<FormPassagem> createState() => _FormPassagemState();
+}
+
+class _FormPassagemState extends State<FormPassagem> {
   @override
   Widget build(BuildContext context) {
     return ListView(

@@ -1,4 +1,5 @@
 import 'package:traveller/app/models/item_bag.dart';
+import 'package:traveller/app/models/rota.dart';
 import 'package:traveller/app/models/usuario.dart';
 
 class Travel {
@@ -9,6 +10,7 @@ class Travel {
   static const String dataFimColumn = 'dataFim';
   static const String ativoColumn = 'ativo';
   static const String itemsBagColumn = 'itemsBag';
+  static const String rotasColumn = 'rotas';
 
   int? id;
   Usuario usuario = Usuario();
@@ -17,6 +19,7 @@ class Travel {
   DateTime dataFim = DateTime.now();
   bool ativo = false;
   List<ItemBag> itemsBag = [];
+  List<Rota> rotas = [];
 
   Travel();
 
@@ -27,6 +30,7 @@ class Travel {
     dataFim = map[dataFimColumn];
     ativo = map[ativoColumn];
     itemsBag = map[itemsBagColumn];
+    rotas = map[rotasColumn];
   }
 
   Map<String, Object?> toMap() {
@@ -34,6 +38,8 @@ class Travel {
       dataInicioColumn: dataInicio,
       dataFimColumn: dataFim,
       ativoColumn: ativo,
+      itemsBagColumn: itemsBag,
+      rotasColumn: rotas,
     };
     if (id != null) map[idColumn] = id;
     if (titulo != null) map[tituloColumn] = titulo;

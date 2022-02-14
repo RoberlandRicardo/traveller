@@ -8,4 +8,8 @@ enum AppAction {
   desactivateOffAuthentication,
   // LISTA TRAVELS ACTIONS
   setListTravels,
+  // TRAVEL CADASTRO ACTIONS
+  initTravelCadastro,
+  setTravelCadastro,
+  closeTravelCadastro,
 }
