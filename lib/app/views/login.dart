@@ -5,6 +5,7 @@ import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/api/routes/autenticacao.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
+import 'package:traveller/app/components/input/input_password.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
@@ -91,7 +92,7 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 20,
                   ),
-                  Input(
+                  InputPassword(
                       controller: passwordController,
                       label: "Senha",
                       placeholder: "Digite sua senha",
