@@ -1,3 +1,4 @@
+import 'package:traveller/app/models/endereco.dart';
 import 'package:traveller/app/models/sessao.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/main_reducers.dart';
@@ -9,12 +10,14 @@ class AppState {
   bool? offAuthentication;
   Travel? travelCadastro;
   List<Travel>? listTravels = [];
+  Endereco? locationUser;
 
   AppState(
       {this.sessao,
       this.offAuthentication,
       this.listTravels,
-      this.travelCadastro});
+      this.travelCadastro,
+      this.locationUser});
 }
 
 final appStore =

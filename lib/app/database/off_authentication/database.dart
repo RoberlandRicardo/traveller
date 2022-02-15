@@ -21,11 +21,12 @@ class DatabaseOffAuthentication {
         await openDatabase(path, version: 1, onCreate: (db, version) async {
       String sql = "";
       tables.forEach((table) {
-        sql = "CREATE TABLE IF NOT EXISTS " + table.toString() + " (";
+        sql = "CREATE TABLE IF NOT EXISTS " + table.name + " (";
         int index = 0;
         table.values.forEach((value) {
-          sql = sql + value.toString();
+          sql = sql + value;
           if (index < table.values.length - 1) sql = sql + ", ";
+          index++;
         });
       });
       sql = sql + ");";
