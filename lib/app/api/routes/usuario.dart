@@ -5,3 +5,7 @@ String CADASTRAR_USUARIO() {
 String INFO_USUARIO() {
   return "user";
 }
+
+String FOTO() {
+  return "photo";
+}

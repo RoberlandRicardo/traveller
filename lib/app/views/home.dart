@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/consts.dart';
 import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/stores/actions.dart';
@@ -22,7 +23,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String state = 'not_travel';
   String location = '';
-  String name = 'Fulano';
+  String name = appStore.state.sessao!.firstname;
+  String urlImage =
+      'https://traveller-back.herokuapp.com' + (appStore.state.foto ?? '');
   String _coin = '5,23';
   String _hour = '17:24';
   String _date = '02/01/2022';
@@ -30,22 +33,6 @@ class _HomeState extends State<Home> {
   String _time = 'Parcialmente nublado';
   String _countDays = '2 meses, 7 dias e 10 horas';
   String tripName = 'Rio de Janeiro';
-
-  Future<void> getUser() async {
-    final response = await Api.enviarRequisicao(
-        method: "GET",
-        endpoint: INFO_USUARIO(),
-        headers: {'Authorization': 'Token ' + appStore.state.sessao!.token});
-    if (response == null) {
-    } else if (response.statusCode >= 200 && response.statusCode < 300) {
-      final Map<String, dynamic> bodyResponse =
-          Map.from(jsonDecode(response.body));
-
-      setState(() {
-        name = bodyResponse["first_name"];
-      });
-    } else {}
-  }
 
   @override
   void initState() {
@@ -67,7 +54,6 @@ class _HomeState extends State<Home> {
             placemarks[0].country!;
       });
     } catch (err) {}
-    getUser();
   }
 
   @override
@@ -93,13 +79,9 @@ class _HomeState extends State<Home> {
                   ]),
                 ),
                 Spacer(),
-                Container(
-                    width: 45.0,
-                    height: 45.0,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    )),
+                CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(urlImage))
               ],
             ),
             Spacer(),

@@ -12,4 +12,5 @@ enum AppAction {
   initTravelCadastro,
   setTravelCadastro,
   closeTravelCadastro,
+  setFoto
 }

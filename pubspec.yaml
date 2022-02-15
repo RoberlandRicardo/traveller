@@ -43,6 +43,8 @@ dependencies:
   sqflite: ^2.0.2
   geolocator: ^8.1.1
   flutter_osm_plugin: ^0.30.1+1
+  image_picker: ^0.8.4+8
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

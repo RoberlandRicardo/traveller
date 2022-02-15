@@ -1,3 +1,8 @@
+// import 'dart:html';
+import 'dart:io';
+
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 import 'package:traveller/app/models/sessao.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/main_reducers.dart';
@@ -9,12 +14,14 @@ class AppState {
   bool? offAuthentication;
   Travel? travelCadastro;
   List<Travel>? listTravels = [];
+  String? foto;
 
   AppState(
       {this.sessao,
       this.offAuthentication,
       this.listTravels,
-      this.travelCadastro});
+      this.travelCadastro,
+      this.foto});
 }
 
 final appStore =

@@ -1,5 +1,6 @@
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
+import 'package:traveller/app/stores/reducers/foto.dart';
 import 'package:traveller/app/stores/reducers/list_travels.dart';
 import 'package:traveller/app/stores/reducers/off_authentication.dart';
 import 'package:traveller/app/stores/reducers/sessao.dart';
@@ -33,6 +34,9 @@ AppState _reducers(AppState state, AppAction action, dynamic payload) {
 
     case AppAction.closeTravelCadastro:
       return closeTravelCadastro(state, payload);
+
+    case AppAction.setFoto:
+      return setFoto(state, payload);
   }
 }
 
