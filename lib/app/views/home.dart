@@ -7,6 +7,7 @@ import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/api/consts.dart';
 import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/models/endereco.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/stores/store.dart';
@@ -49,9 +50,9 @@ class _HomeState extends State<Home> {
         position.longitude,
       );
       setState(() {
-        location = placemarks[0].subAdministrativeArea! +
-            ', ' +
-            placemarks[0].country!;
+        Endereco endUser = Endereco.fromPlaceMark(placemarks[0], position);
+        appStore.dispatcher(
+            action: AppAction.setLocationUser, payload: endUser);
       });
     } catch (err) {}
   }
@@ -75,7 +76,11 @@ class _HomeState extends State<Home> {
                   child: Row(children: [
                     Icon(Icons.location_on,
                         color: Color.fromRGBO(244, 54, 27, 1)),
-                    Text(location)
+                    Text(appStore.state.locationUser == null
+                        ? "Carregando localização..."
+                        : appStore.state.locationUser!.cidade +
+                            ", " +
+                            appStore.state.locationUser!.pais)
                   ]),
                 ),
                 Spacer(),
