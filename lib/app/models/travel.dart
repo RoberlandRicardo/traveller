@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:traveller/app/models/item_bag.dart';
 import 'package:traveller/app/models/rota.dart';
 import 'package:traveller/app/models/usuario.dart';
@@ -5,9 +6,9 @@ import 'package:traveller/app/models/usuario.dart';
 class Travel {
   static const String idColumn = 'id';
   static const String usuarioColumn = 'usuario';
-  static const String tituloColumn = 'titulo';
-  static const String dataInicioColumn = 'dataInicio';
-  static const String dataFimColumn = 'dataFim';
+  static const String tituloColumn = 'title';
+  static const String dataInicioColumn = 'date_start';
+  static const String dataFimColumn = 'date_end';
   static const String ativoColumn = 'ativo';
   static const String itemsBagColumn = 'itemsBag';
   static const String rotasColumn = 'rotas';
@@ -34,15 +35,14 @@ class Travel {
   }
 
   Map<String, Object?> toMap() {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
     Map<String, Object?> map = {
-      dataInicioColumn: dataInicio,
-      dataFimColumn: dataFim,
-      ativoColumn: ativo,
-      itemsBagColumn: itemsBag,
-      rotasColumn: rotas,
+      dataInicioColumn: formatter.format(dataInicio),
+      dataFimColumn: formatter.format(dataFim),
     };
+
     if (id != null) map[idColumn] = id;
-    if (titulo != null) map[tituloColumn] = titulo;
+    if (titulo != null) map[tituloColumn] = titulo.toString();
     return map;
   }
 }

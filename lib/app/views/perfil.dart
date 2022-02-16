@@ -14,24 +14,21 @@ import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Perfil extends StatefulWidget {
-  const Perfil({Key? key}) : super(key: key);
-
-  @override
-  _PerfilState createState() => _PerfilState();
-}
-
+  
 class _PerfilState extends State<Perfil> {
-  static const List<String> _buttonNames = <String>[
-    'Ajuda',
-    'Alterar meus dados',
-    'Gerenciar notificações',
-    'Privacidade',
-    'Sobre',
-    'Créditos',
-    'Sair',
-  ];
-
+  final Map<String, Function> _buttonNames = {
+    'Ajuda': () {},
+    'Alterar meus dados': () {},
+    'Gerenciar notificações': () {},
+    'Privacidade': () {},
+    'Sobre': () {},
+    'Créditos': () {},
+    'Sair': (BuildContext context) {
+      appStore.dispatcher(action: AppAction.removeSessao);
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
+    },
+  };
+  
   @override
   void initState() {
     super.initState();
@@ -75,15 +72,16 @@ class _PerfilState extends State<Perfil> {
     );
   }
 
-  Widget ButtonConf(String name, int index, BuildContext context) {
+  Widget ButtonConf(String key, Function function, BuildContext context) {
     return GestureDetector(
+      onTap: () => {function(context)},
       child: SizedBox(
         height: 60,
         child: FractionallySizedBox(
           widthFactor: 1,
           child: Container(
             decoration: BoxDecoration(
-                border: index == _buttonNames.length - 1
+                border: key == 'Sair'
                     ? null
                     : Border(
                         bottom: BorderSide(
@@ -94,8 +92,8 @@ class _PerfilState extends State<Perfil> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    name,
-                    style: index == _buttonNames.length - 1
+                    key,
+                    style: key == 'Sair'
                         ? TextStyle(
                             fontSize: CustomText.fontSizeBody,
                             fontFamily: CustomText.fontFamily,
@@ -103,7 +101,7 @@ class _PerfilState extends State<Perfil> {
                         : Theme.of(context).textTheme.bodyText1,
                   ),
                   SizedBox(
-                    child: index == _buttonNames.length - 1
+                    child: key == 'Sair'
                         ? null
                         : Icon(
                             Icons.navigate_next,
@@ -145,8 +143,17 @@ class _PerfilState extends State<Perfil> {
         SizedBox(
           height: 10,
         ),
-        Text("Fulano Smith", style: Theme.of(context).textTheme.headline1),
-        Text("Rio Grande do Norte, Brasil",
+        Text(
+            appStore.state.sessao == null
+                ? 'fulano'
+                : appStore.state.sessao!.firstname,
+            style: Theme.of(context).textTheme.headline1),
+        Text(
+            appStore.state.locationUser == null
+                ? "Carregando localização..."
+                : appStore.state.locationUser!.cidade +
+                    ", " +
+                    appStore.state.locationUser!.pais,
             style: Theme.of(context).textTheme.subtitle1),
         SizedBox(
           height: 20,
@@ -161,9 +168,10 @@ class _PerfilState extends State<Perfil> {
               child: Column(
                 children: <Widget>[
                   ..._buttonNames
-                      .asMap()
-                      .map((index, name) =>
-                          MapEntry(index, ButtonConf(name, index, context)))
+                      .map((name, function) {
+                        return MapEntry(
+                            name, ButtonConf(name, function, context));
+                      })
                       .values
                       .toList()
                 ],

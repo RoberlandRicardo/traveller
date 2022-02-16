@@ -106,38 +106,41 @@ class _PageTravelsState extends State<PageTravels> {
 
   Drawer getDrawer() {
     return Drawer(
-        child: Column(
-      children: <Widget>[
-        Center(
-            child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(
-            "Viagens cadastradas",
-            style: TextStyle(
-                fontSize: 18,
-                color: CustomText.fontColor,
-                fontWeight: FontWeight.w700),
-          ),
-        )),
-        Divider(height: 1, thickness: 1, color: Colors.black12),
-        Expanded(
-          child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(height: 1, thickness: 1, color: Colors.black12),
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
+      child: Column(
+        children: <Widget>[
+          Center(
+              child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Text(
+              "Viagens cadastradas",
+              style: TextStyle(
+                  fontSize: 18,
+                  color: CustomText.fontColor,
+                  fontWeight: FontWeight.w700),
+            ),
+          )),
+          Divider(height: 1, thickness: 1, color: Colors.black12),
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(height: 1, thickness: 1, color: Colors.black12),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
 
-              return ListTile(
-                  title: item.buildTitle(context, index),
-                  onTap: () {
-                    print(item.getId());
-                  });
-            },
+                return ListTile(
+                    title: item.buildTitle(context, index),
+                    onTap: () {
+                      print(item.getId());
+                    });
+              },
+            ),
           ),
-        )
-      ],
-    ));
+          for (Travel t in appStore.state.listTravels!)
+            CardTravel(titulo: t.titulo, data: t.dataInicio)
+        ],
+      ),
+    );
   }
 
   getWidgetNotTravel() {

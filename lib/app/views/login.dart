@@ -7,7 +7,11 @@ import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:traveller/app/components/input/input_password.dart';
+
+import 'package:traveller/app/database/off_authentication/controller/controllerTravel.dart';
 import 'package:traveller/app/models/sessao.dart';
+import 'package:traveller/app/models/usuario.dart';
+
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
@@ -43,8 +47,9 @@ class _LoginState extends State<Login> {
       });
       appStore.dispatcher(
           action: AppAction.setToken, payload: bodyResponse["token"]);
+
       getPhoto();
-      getUser();
+      await getUser(bodyResponse["token"]);
       Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
     } else {
       final Map<String, dynamic> bodyResponse =
@@ -95,6 +100,22 @@ class _LoginState extends State<Login> {
     } else {}
   }
 
+  Future<void> getUser(token) async {
+    final response = await Api.enviarRequisicao(
+      method: "GET",
+      endpoint: INFO_USUARIO(),
+    );
+
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      final Map<String, dynamic> bodyResponse =
+          Map.from(jsonDecode(response.body));
+      Sessao session = Sessao.fromUsuario(
+          token: token, usuario: Usuario.fromMap(bodyResponse));
+      appStore.dispatcher(action: AppAction.setSessao, payload: session);
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
@@ -103,10 +124,6 @@ class _LoginState extends State<Login> {
       functionFirstButton: () => login(),
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/cadastro')},
-      functionHomeButton: () {
-        appStore.dispatcher(action: AppAction.activateOffAuthentication);
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
-      },
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Column(
