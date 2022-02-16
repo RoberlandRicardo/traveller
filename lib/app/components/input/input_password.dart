@@ -20,7 +20,7 @@ class InputPassword extends StatefulWidget {
 }
 
 class _InputPasswordState extends State<InputPassword> {
-  bool _passwordVisible = false;
+  bool _passwordVisible = true;
 
   @override
   Widget build(BuildContext context) {

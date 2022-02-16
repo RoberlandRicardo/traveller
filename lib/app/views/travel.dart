@@ -85,7 +85,7 @@ class _PageTravelsState extends State<PageTravels> {
               ),
             ),
           ),
-          for (Travel t in appStore.state.listTravels!)
+          for (Travel t in appStore.state.listTravels ?? [])
             CardTravel(titulo: t.titulo, data: t.dataInicio)
         ],
       ),

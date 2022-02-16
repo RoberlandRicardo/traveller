@@ -25,7 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String state = 'not_travel';
   String location = '';
-  String name = appStore.state.sessao!.firstname;
+  String name = "";
   String urlImage =
       'https://traveller-back.herokuapp.com' + (appStore.state.foto ?? '');
   String _coin = '5,23';
@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     updateCity();
-    verifyIsTravelling();
+    if (appStore.state.listTravels != null) verifyIsTravelling();
   }
 
   verifyIsTravelling() {
@@ -73,7 +73,6 @@ class _HomeState extends State<Home> {
       tripName = minTimeTravel.titulo;
     }
     setState(() {});
-
   }
 
   updateCity() async {
@@ -120,8 +119,8 @@ class _HomeState extends State<Home> {
                 ),
                 Spacer(),
                 CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(urlImage))
+                  backgroundColor: Colors.grey,
+                )
               ],
             ),
             Spacer(),

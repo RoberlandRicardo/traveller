@@ -12,14 +12,12 @@ class GenericScreen extends StatelessWidget {
   static const List<String> _pages = <String>[
     '/home',
     '/travel',
-    '/home',
     '/perfil',
   ];
 
   static const List<String> _topBarNames = <String>[
     'Home',
     'Viagens',
-    'Feed',
     'Perfil',
   ];
 
@@ -71,17 +69,6 @@ class GenericScreen extends StatelessWidget {
                 size: 32,
               ),
               label: 'Viagem',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_today_outlined,
-                size: 32,
-              ),
-              activeIcon: Icon(
-                Icons.calendar_today,
-                size: 32,
-              ),
-              label: 'Feed',
             ),
             BottomNavigationBarItem(
               icon: Icon(

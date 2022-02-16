@@ -80,26 +80,6 @@ class _LoginState extends State<Login> {
     } else {}
   }
 
-  Future<void> getUser() async {
-    final response = await Api.enviarRequisicao(
-        method: "GET",
-        endpoint: INFO_USUARIO(),
-        headers: {'Authorization': 'Token ' + _token});
-    if (response == null) {
-    } else if (response.statusCode >= 200 && response.statusCode < 300) {
-      final Map<String, dynamic> bodyResponse =
-          Map.from(jsonDecode(response.body));
-      print(bodyResponse);
-      appStore.dispatcher(
-          action: AppAction.setSessao,
-          payload: Sessao(
-              token: _token,
-              firstname: bodyResponse["first_name"],
-              lastname: bodyResponse["last_name"],
-              email: bodyResponse["email"]));
-    } else {}
-  }
-
   Future<void> getUser(token) async {
     final response = await Api.enviarRequisicao(
       method: "GET",
