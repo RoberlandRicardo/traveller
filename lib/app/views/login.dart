@@ -85,7 +85,6 @@ class _LoginState extends State<Login> {
       method: "GET",
       endpoint: INFO_USUARIO(),
     );
-
     if (response == null) {
     } else if (response.statusCode >= 200 && response.statusCode < 300) {
       final Map<String, dynamic> bodyResponse =

@@ -44,16 +44,18 @@ class _HomeState extends State<Home> {
   }
 
   verifyIsTravelling() {
-    appStore.state.listTravels!.forEach((travel) {
+    appStore.state.listTravels?.forEach((travel) {
       if (travel.ativo) {
         state = 'travelling';
         return;
       }
     });
+
     if (state == 'travelling') return;
     Travel minTimeTravel = Travel();
     minTimeTravel.dataInicio = DateTime.utc(275760, 09, 13);
-    appStore.state.listTravels!.forEach((travel) {
+
+    appStore.state.listTravels?.forEach((travel) {
       if (travel.dataInicio.isAfter(DateTime.now())) {
         if (travel.dataInicio.difference(DateTime.now()).abs() <
             minTimeTravel.dataInicio.difference(DateTime.now()).abs()) {
