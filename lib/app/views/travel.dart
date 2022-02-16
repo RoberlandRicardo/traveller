@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/routes/viagem.dart';
 import 'package:traveller/app/components/card/card_travel.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/components/card/card_rota_travel.dart';
 import 'package:traveller/app/models/travel.dart';
+import 'package:traveller/app/models/travel_api.dart';
+import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 import 'package:traveller/app/util/extensionFunctions.dart';
@@ -18,12 +24,43 @@ class PageTravels extends StatefulWidget {
 
 class _PageTravelsState extends State<PageTravels> {
   Travel? activeTravel;
+  List<ListItem> items = [
+    ItemLists(
+      title: 'Rio',
+      id: '01',
+      active: false,
+    ),
+    ItemLists(
+      title: 'Natal',
+      id: '02',
+      active: false,
+    ),
+    ItemLists(
+      title: 'Recife',
+      id: '03',
+      active: false,
+    )
+  ];
 
   @override
   void initState() {
     super.initState();
     activeTravel =
         appStore.state.listTravels.firstWhereOrNull((travel) => travel.ativo);
+    getTravels();
+  }
+
+  Future<void> getTravels() async {
+    final response = await Api.enviarRequisicao(
+        method: "GET",
+        endpoint: TODAS_VIAGENS(),
+        headers: {'Authorization': 'Token ' + appStore.state.sessao!.token});
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<TravelApi> travelApiFromJson(String str) => List<TravelApi>.from(
+          json.decode(str).map((x) => TravelApi.fromJson(x)));
+      final travelApi = travelApiFromJson(response.body);
+    } else {}
   }
 
   @override
@@ -69,25 +106,38 @@ class _PageTravelsState extends State<PageTravels> {
 
   Drawer getDrawer() {
     return Drawer(
-      child: ListView(
-        children: [
-          Container(
-            height: 60,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black26))),
-              child: Text(
-                "Viagens cadastradas",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: CustomText.fontColor,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
+        child: Column(
+      children: <Widget>[
+        Center(
+            child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            "Viagens cadastradas",
+            style: TextStyle(
+                fontSize: 18,
+                color: CustomText.fontColor,
+                fontWeight: FontWeight.w700),
           ),
-        ],
-      ),
-    );
+        )),
+        Divider(height: 1, thickness: 1, color: Colors.black12),
+        Expanded(
+          child: ListView.separated(
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(height: 1, thickness: 1, color: Colors.black12),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+
+              return ListTile(
+                  title: item.buildTitle(context, index),
+                  onTap: () {
+                    print(item.getId());
+                  });
+            },
+          ),
+        )
+      ],
+    ));
   }
 
   getWidgetNotTravel() {
@@ -150,5 +200,39 @@ class _PageTravelsState extends State<PageTravels> {
                     ))),
           ],
         ));
+  }
+}
+
+class ItemLists implements ListItem {
+  String title;
+  String id;
+  bool active;
+
+  ItemLists({required this.title, required this.id, required this.active});
+
+  @override
+  Widget buildTitle(BuildContext context, int index) => Text(title);
+
+  @override
+  String getId() {
+    return id;
+  }
+
+  @override
+  bool getActive() {
+    return active;
+  }
+  // toString() => 'Id: $id, Active: $active';
+}
+
+abstract class ListItem {
+  Widget buildTitle(BuildContext context, int index);
+
+  String getId() {
+    return '';
+  }
+
+  bool getActive() {
+    return false;
   }
 }
