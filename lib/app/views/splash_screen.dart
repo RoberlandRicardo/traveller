@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
+import 'package:traveller/app/database/off_authentication/controller/controllerTravel.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
@@ -16,10 +22,6 @@ class SplashScreen extends StatelessWidget {
         },
         functionSecondButton: () {
           Navigator.pushNamed(context, '/cadastro');
-        },
-        functionHomeButton: () {
-          appStore.dispatcher(action: AppAction.activateOffAuthentication);
-          Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

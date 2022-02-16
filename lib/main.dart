@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
+import 'package:traveller/app/database/off_authentication/database.dart';
 import 'package:traveller/app/views/cadastro_travel.dart';
 import 'package:traveller/app/views/perfil.dart';
 import 'package:traveller/app/styles/custom_colors.dart';

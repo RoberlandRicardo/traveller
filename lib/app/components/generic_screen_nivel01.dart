@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
+import 'package:traveller/app/database/off_authentication/controller/controllerTravel.dart';
+import 'package:traveller/app/stores/actions.dart';
+import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
 class GenericScreen extends StatelessWidget {
@@ -11,18 +14,24 @@ class GenericScreen extends StatelessWidget {
   final String textSecondButton;
   final Function functionFirstButton;
   final Function functionSecondButton;
-  final Function functionHomeButton;
 
-  GenericScreen(
-      {required this.child,
-      required this.textFirstButton,
-      required this.textSecondButton,
-      required this.functionFirstButton,
-      required this.functionSecondButton,
-      required this.functionHomeButton});
+  GenericScreen({
+    required this.child,
+    required this.textFirstButton,
+    required this.textSecondButton,
+    required this.functionFirstButton,
+    required this.functionSecondButton,
+  });
 
   @override
   Widget build(BuildContext context) {
+    Future<void> loginOffAuth() async {
+      appStore.dispatcher(
+          action: AppAction.setListTravels,
+          payload: await ControllerTravelOffAuth.getTravels());
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+    }
+
     return Scaffold(
         body: Container(
           width: MediaQuery.of(context).size.width,
@@ -53,7 +62,11 @@ class GenericScreen extends StatelessWidget {
                       color: CustomText.fontColorOrange,
                       fontWeight: FontWeight.bold),
                 ),
-                onPressed: () => functionHomeButton(),
+                onPressed: () {
+                  appStore.dispatcher(
+                      action: AppAction.activateOffAuthentication);
+                  loginOffAuth();
+                },
               ),
               SizedBox(
                 height: 20,

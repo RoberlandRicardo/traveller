@@ -7,25 +7,29 @@ import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 
 class Perfil extends StatelessWidget {
-  static const List<String> _buttonNames = <String>[
-    'Ajuda',
-    'Alterar meus dados',
-    'Gerenciar notificações',
-    'Privacidade',
-    'Sobre',
-    'Créditos',
-    'Sair',
-  ];
+  final Map<String, Function> _buttonNames = {
+    'Ajuda': () {},
+    'Alterar meus dados': () {},
+    'Gerenciar notificações': () {},
+    'Privacidade': () {},
+    'Sobre': () {},
+    'Créditos': () {},
+    'Sair': (BuildContext context) {
+      appStore.dispatcher(action: AppAction.removeSessao);
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
+    },
+  };
 
-  Widget ButtonConf(String name, int index, BuildContext context) {
+  Widget ButtonConf(String key, Function function, BuildContext context) {
     return GestureDetector(
+      onTap: () => {function(context)},
       child: SizedBox(
         height: 60,
         child: FractionallySizedBox(
           widthFactor: 1,
           child: Container(
             decoration: BoxDecoration(
-                border: index == _buttonNames.length - 1
+                border: key == 'Sair'
                     ? null
                     : Border(
                         bottom: BorderSide(
@@ -36,8 +40,8 @@ class Perfil extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    name,
-                    style: index == _buttonNames.length - 1
+                    key,
+                    style: key == 'Sair'
                         ? TextStyle(
                             fontSize: CustomText.fontSizeBody,
                             fontFamily: CustomText.fontFamily,
@@ -45,7 +49,7 @@ class Perfil extends StatelessWidget {
                         : Theme.of(context).textTheme.bodyText1,
                   ),
                   SizedBox(
-                    child: index == _buttonNames.length - 1
+                    child: key == 'Sair'
                         ? null
                         : Icon(
                             Icons.navigate_next,
@@ -98,8 +102,17 @@ class Perfil extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        Text("Fulano Smith", style: Theme.of(context).textTheme.headline1),
-        Text("Rio Grande do Norte, Brasil",
+        Text(
+            appStore.state.sessao == null
+                ? 'fulano'
+                : appStore.state.sessao!.firstname,
+            style: Theme.of(context).textTheme.headline1),
+        Text(
+            appStore.state.locationUser == null
+                ? "Carregando localização..."
+                : appStore.state.locationUser!.cidade +
+                    ", " +
+                    appStore.state.locationUser!.pais,
             style: Theme.of(context).textTheme.subtitle1),
         SizedBox(
           height: 20,
@@ -114,9 +127,10 @@ class Perfil extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   ..._buttonNames
-                      .asMap()
-                      .map((index, name) =>
-                          MapEntry(index, ButtonConf(name, index, context)))
+                      .map((name, function) {
+                        return MapEntry(
+                            name, ButtonConf(name, function, context));
+                      })
                       .values
                       .toList()
                 ],

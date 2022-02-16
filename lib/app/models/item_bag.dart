@@ -20,4 +20,8 @@ class ItemBag {
     };
     return map;
   }
+
+  Map toJson() => {
+        'name': name,
+      };
 }

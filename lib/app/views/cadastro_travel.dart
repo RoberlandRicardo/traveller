@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/routes/travel.dart';
 import 'package:traveller/app/components/card/card_rota.dart';
 import 'package:traveller/app/components/custom_button_01.dart';
 import 'package:traveller/app/components/generic_screen_nivel03.dart';
 import 'package:traveller/app/components/input/input_item_bag.dart';
+import 'package:traveller/app/database/off_authentication/controller/controllerTravel.dart';
 import 'package:traveller/app/models/item_bag.dart';
 import 'package:traveller/app/components/modal/modal_rota.dart';
 import 'package:traveller/app/components/pagination_01.dart';
@@ -278,13 +283,33 @@ class Bag extends StatefulWidget {
 }
 
 class _BagState extends State<Bag> {
+  void registerTravel() async {
+    if (appStore.state.offAuthentication ??
+        appStore.state.offAuthentication == true) {
+      await ControllerTravelOffAuth.insertTravel(
+          appStore.state.travelCadastro!);
+      appStore.state.listTravels?.add(appStore.state.travelCadastro!);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FinishScreen()));
+    } else {
+      final response = await Api.enviarRequisicao(
+          method: 'POST',
+          endpoint: CADASTRAR_TRAVEL(),
+          data: appStore.state.travelCadastro!.toMap());
+      if (response == null) {
+      } else if (response.statusCode >= 200 && response.statusCode < 300) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => FinishScreen()));
+      } else {}
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GenericScreen(
       title: "Cadastro de viagem",
       floactingActionButtonFunction: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => FinishScreen()));
+        registerTravel();
       },
       child: SingleChildScrollView(
         child: Padding(
@@ -395,7 +420,10 @@ class FinishScreen extends StatelessWidget {
             ),
             CustomButton(
                 textButton: "ÓTIMO",
-                action: () => Navigator.pushReplacementNamed(context, '/home')),
+                action: () {
+                  Navigator.pushReplacementNamed(context, '/home');
+                  appStore.dispatcher(action: AppAction.closeTravelCadastro);
+                }),
             SizedBox(
               height: 30,
             ),
