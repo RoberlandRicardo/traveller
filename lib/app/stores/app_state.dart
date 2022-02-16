@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 import 'package:traveller/app/models/endereco.dart';
 import 'package:traveller/app/models/sessao.dart';
 import 'package:traveller/app/stores/actions.dart';
@@ -10,6 +13,7 @@ class AppState {
   bool? offAuthentication;
   Travel? travelCadastro;
   List<Travel>? listTravels = [];
+  String? foto;
   Endereco? locationUser;
 
   AppState(
@@ -17,6 +21,7 @@ class AppState {
       this.offAuthentication,
       this.listTravels,
       this.travelCadastro,
+      this.foto,
       this.locationUser});
 }
 

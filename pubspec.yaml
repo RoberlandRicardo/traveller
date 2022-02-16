@@ -42,6 +42,8 @@ dependencies:
   sqflite: ^2.0.2
   osm_nominatim: ^2.0.1
   geolocator: ^8.1.1
+  image_picker: ^0.8.4+8
+  fluttertoast: ^8.0.8
   flutter_osm_plugin: ^0.30.1+2
   flutter_google_places: ^0.3.0
   google_maps_webservice: ^0.0.19

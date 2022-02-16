@@ -1,12 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/consts.dart';
+import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
+import 'package:image_picker/image_picker.dart';
 
-class Perfil extends StatelessWidget {
+  
+class _PerfilState extends State<Perfil> {
   final Map<String, Function> _buttonNames = {
     'Ajuda': () {},
     'Alterar meus dados': () {},
@@ -19,6 +28,49 @@ class Perfil extends StatelessWidget {
       Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
     },
   };
+  
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> sendPhoto() async {
+    File? imageFile;
+    ImagePicker _picker = ImagePicker();
+    var image = await _picker.pickImage(source: ImageSource.gallery);
+    imageFile = (File(image!.path));
+
+    Map<String, String> headers = {
+      'Authorization': 'Token ' + appStore.state.sessao!.token
+    };
+    final uri = Uri.parse(url + FOTO());
+    var request = http.MultipartRequest('POST', uri);
+    request.headers.addAll(headers);
+    request.files.add(await http.MultipartFile.fromPath("photo", image.path));
+    var response = await request.send();
+
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      response.stream.transform(utf8.decoder).listen((value) {
+        final Map<String, dynamic> bodyResponse = Map.from(jsonDecode(value));
+
+        appStore.dispatcher(
+            action: AppAction.setFoto, payload: bodyResponse["photo"]);
+      });
+    } else {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GenericScreen(
+      currendIndex: 3,
+      child: SingleChildScrollView(
+          child: appStore.state.offAuthentication != null &&
+                  appStore.state.offAuthentication == true
+              ? notAuth(context)
+              : auth(context)),
+    );
+  }
 
   Widget ButtonConf(String key, Function function, BuildContext context) {
     return GestureDetector(
@@ -66,18 +118,6 @@ class Perfil extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return GenericScreen(
-      currendIndex: 3,
-      child: SingleChildScrollView(
-          child: appStore.state.offAuthentication != null &&
-                  appStore.state.offAuthentication == true
-              ? notAuth(context)
-              : auth(context)),
-    );
-  }
-
   Widget auth(context) {
     return Column(
       children: [
@@ -85,20 +125,21 @@ class Perfil extends StatelessWidget {
           height: 20,
         ),
         GestureDetector(
-          child: Container(
-            width: 90,
-            height: 90,
-            decoration: BoxDecoration(
-              color: CustomText.fontColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.person,
-              size: 80,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-          ),
-        ),
+            onTap: () async {
+              sendPhoto();
+            },
+            child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  color: CustomText.fontColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person,
+                  size: 80,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ))),
         SizedBox(
           height: 10,
         ),

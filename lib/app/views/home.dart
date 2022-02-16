@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/consts.dart';
 import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/models/endereco.dart';
@@ -23,6 +24,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String state = 'not_travel';
+  String location = '';
+  String name = appStore.state.sessao!.firstname;
+  String urlImage =
+      'https://traveller-back.herokuapp.com' + (appStore.state.foto ?? '');
   String _coin = '5,23';
   String _hour = '17:24';
   String _date = '02/01/2022';
@@ -68,6 +73,7 @@ class _HomeState extends State<Home> {
       tripName = minTimeTravel.titulo;
     }
     setState(() {});
+
   }
 
   updateCity() async {
@@ -113,13 +119,9 @@ class _HomeState extends State<Home> {
                   ]),
                 ),
                 Spacer(),
-                Container(
-                    width: 45.0,
-                    height: 45.0,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    )),
+                CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(urlImage))
               ],
             ),
             Spacer(),

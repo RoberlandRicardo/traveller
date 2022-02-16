@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/api/routes/autenticacao.dart';
@@ -7,9 +7,11 @@ import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:traveller/app/components/input/input_password.dart';
+
 import 'package:traveller/app/database/off_authentication/controller/controllerTravel.dart';
 import 'package:traveller/app/models/sessao.dart';
 import 'package:traveller/app/models/usuario.dart';
+
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
@@ -28,6 +30,7 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
   String _username = '';
   String _password = '';
+  String _token = '';
 
   Future<void> login() async {
     final response = await Api.enviarRequisicao(
@@ -39,12 +42,61 @@ class _LoginState extends State<Login> {
     } else if (response.statusCode >= 200 && response.statusCode < 300) {
       final Map<String, dynamic> bodyResponse =
           Map.from(jsonDecode(response.body));
-
+      setState(() {
+        _token = bodyResponse["token"];
+      });
       appStore.dispatcher(
           action: AppAction.setToken, payload: bodyResponse["token"]);
-      await getUser(bodyResponse["token"]);
 
+      getPhoto();
+      await getUser(bodyResponse["token"]);
       Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+    } else {
+      final Map<String, dynamic> bodyResponse =
+          Map.from(jsonDecode(response.body));
+
+      Fluttertoast.showToast(
+          msg: bodyResponse["error"],
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0);
+    }
+  }
+
+  Future<void> getPhoto() async {
+    final response = await Api.enviarRequisicao(
+        method: "GET",
+        endpoint: FOTO(),
+        headers: {'Authorization': 'Token ' + _token});
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      final Map<String, dynamic> bodyResponse =
+          Map.from(jsonDecode(response.body));
+
+      appStore.dispatcher(
+          action: AppAction.setFoto, payload: bodyResponse["photo"]);
+    } else {}
+  }
+
+  Future<void> getUser() async {
+    final response = await Api.enviarRequisicao(
+        method: "GET",
+        endpoint: INFO_USUARIO(),
+        headers: {'Authorization': 'Token ' + _token});
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      final Map<String, dynamic> bodyResponse =
+          Map.from(jsonDecode(response.body));
+      print(bodyResponse);
+      appStore.dispatcher(
+          action: AppAction.setSessao,
+          payload: Sessao(
+              token: _token,
+              firstname: bodyResponse["first_name"],
+              lastname: bodyResponse["last_name"],
+              email: bodyResponse["email"]));
     } else {}
   }
 
