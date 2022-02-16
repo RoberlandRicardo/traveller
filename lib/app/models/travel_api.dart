@@ -112,6 +112,16 @@ class TravelApi {
             json["backpack_items"].map((x) => BackpackItem.fromJson(x))),
       );
 
+  getElementToListAllTravel(String element) {
+    if (element == 'id') {
+      return (id.toString());
+    } else if (element == 'active') {
+      return active;
+    } else {
+      return title;
+    }
+    ;
+  }
   // Map<String, dynamic> toJson() => {
   //       "title": title,
   //       "date_start":

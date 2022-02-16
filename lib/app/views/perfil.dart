@@ -14,7 +14,13 @@ import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 import 'package:image_picker/image_picker.dart';
 
-  
+class Perfil extends StatefulWidget {
+  const Perfil({Key? key}) : super(key: key);
+
+  @override
+  _PerfilState createState() => _PerfilState();
+}
+
 class _PerfilState extends State<Perfil> {
   final Map<String, Function> _buttonNames = {
     'Ajuda': () {},
@@ -28,7 +34,7 @@ class _PerfilState extends State<Perfil> {
       Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
     },
   };
-  
+
   @override
   void initState() {
     super.initState();

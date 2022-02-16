@@ -32,7 +32,7 @@ class Accommodation {
     required this.boardingGate,
   });
   String address;
-  DateTime checkInDate;
+  DateTime? checkInDate = null;
   String checkInHour;
   DateTime? checkOutDate = null;
   String checkOutHour;
@@ -46,33 +46,31 @@ class Accommodation {
   String boardingGate;
 
   factory Accommodation.fromJson(Map<String, dynamic> json) => Accommodation(
-        address: json["address"],
-        checkInDate: DateTime.parse(json["check_in_date"]),
-        checkInHour: json["check_in_hour"],
-        // checkOutDate: DateTime.parse(json["check_out_date"]),
+        address: json["address"] == null ? '' : json["address"],
+        checkInDate: json["check_in_date"] == null
+            ? null
+            : DateTime.parse(json["check_in_date"]),
+        checkInHour: json["check_in_hour"] == null ? '' : json["check_in_hour"],
         checkOutDate: json["check_out_date"] == null
             ? null
             : DateTime.parse(json["check_out_date"]),
         checkOutHour:
-            json["check_out_hour"] == null ? null : json["check_out_hour"],
-        // checkOutHour: json["check_out_hour"],
-        price: json["price"],
-        typeCard: json["type_card"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-        travel: json["travel"],
-        id: json["id"],
-        // seat: json["seat"],
-        seat: json["seat"] == null ? null : json["seat"],
-        // boardingGate: json["boarding_gate"],
+            json["check_out_hour"] == null ? '' : json["check_out_hour"],
+        price: json["price"] == null ? '' : json["price"],
+        typeCard: json["type_card"] == null ? '' : json["type_card"],
+        latitude: json["latitude"] == null ? '' : json["latitude"],
+        longitude: json["longitude"] == null ? '' : json["longitude"],
+        travel: json["travel"] == null ? null : json["travel"],
+        id: json["id"] == null ? null : json["id"],
+        seat: json["seat"] == null ? '' : json["seat"],
         boardingGate:
-            json["boarding_gate"] == null ? null : json["boarding_gate"],
+            json["boarding_gate"] == null ? '' : json["boarding_gate"],
       );
 
   Map<String, dynamic> toJson() => {
         "address": address,
         "check_in_date":
-            "${checkInDate.year.toString().padLeft(4, '0')}-${checkInDate.month.toString().padLeft(2, '0')}-${checkInDate.day.toString().padLeft(2, '0')}",
+            "${checkInDate!.year.toString().padLeft(4, '0')}-${checkInDate!.month.toString().padLeft(2, '0')}-${checkInDate!.day.toString().padLeft(2, '0')}",
         "check_in_hour": checkInHour,
         "check_out_date": checkOutDate == null
             ? null

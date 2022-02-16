@@ -24,23 +24,8 @@ class PageTravels extends StatefulWidget {
 
 class _PageTravelsState extends State<PageTravels> {
   Travel? activeTravel;
-  List<ListItem> items = [
-    ItemLists(
-      title: 'Rio',
-      id: '01',
-      active: false,
-    ),
-    ItemLists(
-      title: 'Natal',
-      id: '02',
-      active: false,
-    ),
-    ItemLists(
-      title: 'Recife',
-      id: '03',
-      active: false,
-    )
-  ];
+
+  List<ListItem> items = [];
 
   @override
   void initState() {
@@ -57,10 +42,45 @@ class _PageTravelsState extends State<PageTravels> {
         headers: {'Authorization': 'Token ' + appStore.state.sessao!.token});
     if (response == null) {
     } else if (response.statusCode >= 200 && response.statusCode < 300) {
-      List<TravelApi> travelApiFromJson(String str) => List<TravelApi>.from(
-          json.decode(str).map((x) => TravelApi.fromJson(x)));
-      final travelApi = travelApiFromJson(response.body);
+      List<TravelApi> responseBody = List<TravelApi>.from(
+          json.decode(response.body).map((x) => TravelApi.fromJson(x)));
+
+      setState(() {
+        for (var i = 0; i < responseBody.length; i++) {
+          items.add(ItemLists(
+              active: responseBody[i].getElementToListAllTravel('active'),
+              id: responseBody[i].getElementToListAllTravel('id'),
+              title: responseBody[i].getElementToListAllTravel('title')));
+        }
+      });
     } else {}
+  }
+
+  void _activeTravel(String idOnPress) async {
+    List<ListItem> copyListTravel = items;
+
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].getActive() == true && items[i].getId() != idOnPress) {
+        // enviar quisicição para inativo
+        copyListTravel[i] = ItemLists(
+          title: copyListTravel[i].getTitle(),
+          id: copyListTravel[i].getId(),
+          active: false,
+        );
+      }
+      if (items[i].getActive() == false && items[i].getId() == idOnPress) {
+        // enviar quisicição para ativo
+        copyListTravel[i] = ItemLists(
+          title: copyListTravel[i].getTitle(),
+          id: copyListTravel[i].getId(),
+          active: true,
+        );
+      }
+    }
+
+    setState(() {
+      items = copyListTravel;
+    });
   }
 
   @override
@@ -131,13 +151,14 @@ class _PageTravelsState extends State<PageTravels> {
                 return ListTile(
                     title: item.buildTitle(context, index),
                     onTap: () {
-                      print(item.getId());
+                      _activeTravel(item.getId());
                     });
               },
             ),
           ),
-          for (Travel t in appStore.state.listTravels!)
-            CardTravel(titulo: t.titulo, data: t.dataInicio)
+          if (appStore.state.listTravels != null)
+            for (Travel t in appStore.state.listTravels!)
+              CardTravel(titulo: t.titulo, data: t.dataInicio)
         ],
       ),
     );
@@ -214,7 +235,10 @@ class ItemLists implements ListItem {
   ItemLists({required this.title, required this.id, required this.active});
 
   @override
-  Widget buildTitle(BuildContext context, int index) => Text(title);
+  Widget buildTitle(BuildContext context, int index) => Text(title,
+      style: TextStyle(
+        fontWeight: active ? FontWeight.bold : FontWeight.normal,
+      ));
 
   @override
   String getId() {
@@ -225,7 +249,11 @@ class ItemLists implements ListItem {
   bool getActive() {
     return active;
   }
-  // toString() => 'Id: $id, Active: $active';
+
+  @override
+  String getTitle() {
+    return title;
+  }
 }
 
 abstract class ListItem {
@@ -237,5 +265,9 @@ abstract class ListItem {
 
   bool getActive() {
     return false;
+  }
+
+  String getTitle() {
+    return '';
   }
 }
