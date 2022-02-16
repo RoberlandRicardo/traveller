@@ -8,6 +8,7 @@ import 'package:traveller/app/api/consts.dart';
 import 'package:traveller/app/api/routes/usuario.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/models/endereco.dart';
+import 'package:traveller/app/models/travel.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/stores/store.dart';
@@ -33,12 +34,46 @@ class _HomeState extends State<Home> {
   String _temperature = '12 C';
   String _time = 'Parcialmente nublado';
   String _countDays = '2 meses, 7 dias e 10 horas';
-  String tripName = 'Rio de Janeiro';
+  String? tripName = 'Rio de Janeiro';
 
   @override
   void initState() {
     super.initState();
     updateCity();
+    verifyIsTravelling();
+  }
+
+  verifyIsTravelling() {
+    appStore.state.listTravels!.forEach((travel) {
+      if (travel.ativo) {
+        state = 'travelling';
+        return;
+      }
+    });
+    if (state == 'travelling') return;
+    Travel minTimeTravel = Travel();
+    minTimeTravel.dataInicio = DateTime.utc(275760, 09, 13);
+    appStore.state.listTravels!.forEach((travel) {
+      if (travel.dataInicio.isAfter(DateTime.now())) {
+        if (travel.dataInicio.difference(DateTime.now()).abs() <
+            minTimeTravel.dataInicio.difference(DateTime.now()).abs()) {
+          minTimeTravel = travel;
+        }
+      }
+    });
+    if (minTimeTravel.dataInicio == DateTime.utc(275760, 09, 13)) {
+      state = 'not_travel';
+    } else {
+      state = 'before_travel';
+      _countDays = minTimeTravel.dataInicio
+              .difference(DateTime.now())
+              .inDays
+              .toString() +
+          " dias";
+      tripName = minTimeTravel.titulo;
+    }
+    setState(() {});
+
   }
 
   updateCity() async {
@@ -102,7 +137,9 @@ class _HomeState extends State<Home> {
                               fontWeight: FontWeight.bold, fontSize: 34),
                         ),
                         Text(
-                          name,
+                          appStore.state.sessao == null
+                              ? 'fulano'
+                              : appStore.state.sessao!.firstname,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 34),
                         ),
@@ -221,7 +258,7 @@ class _HomeState extends State<Home> {
             'Para',
           ),
           Text(
-            tripName,
+            tripName ?? "Sua próxima viagem",
             style: TextStyle(
                 color: Color.fromRGBO(244, 54, 27, 1),
                 fontWeight: FontWeight.bold,

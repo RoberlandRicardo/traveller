@@ -3,6 +3,7 @@ import 'package:traveller/app/api/api.dart';
 import 'package:traveller/app/components/generic_screen_nivel01.dart';
 import 'package:traveller/app/components/input/input_01.dart';
 import 'package:http/http.dart' as http;
+import 'package:traveller/app/database/off_authentication/controller/controllerTravel.dart';
 import 'package:traveller/app/stores/actions.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -55,10 +56,6 @@ class _CadastroState extends State<Cadastro> {
       functionFirstButton: () => register(),
       functionSecondButton: () =>
           {Navigator.pushReplacementNamed(context, '/login')},
-      functionHomeButton: () {
-        appStore.dispatcher(action: AppAction.activateOffAuthentication);
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
-      },
       child: FractionallySizedBox(
         widthFactor: 0.9,
         child: Column(

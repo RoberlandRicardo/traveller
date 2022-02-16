@@ -4,8 +4,8 @@ class Usuario {
   static const String idColumn = 'id';
   static const String usernameColumn = 'username';
   static const String passwordColumn = 'password';
-  static const String firstnameColumn = 'firstname';
-  static const String lastnameColumn = 'lastname';
+  static const String firstnameColumn = 'first_name';
+  static const String lastnameColumn = 'last_name';
   static const String emailColumn = 'email';
   static const String travelsColumn = 'travels';
   int? id;
@@ -26,13 +26,17 @@ class Usuario {
       required this.email});
 
   Usuario.fromMap(Map map) {
-    if (map[idColumn] == null) id = null;
+    if (map.containsKey(idColumn))
+      id = map[idColumn];
+    else
+      id = null;
     username = map[usernameColumn];
-    password = map[passwordColumn];
     firstname = map[firstnameColumn];
-    if (map[lastnameColumn] == null) lastname = null;
+    if (map.containsKey(lastnameColumn))
+      lastname = map[lastnameColumn];
+    else
+      lastname = null;
     email = map[emailColumn];
-    travels = map[travelsColumn];
   }
 
   Map<String, Object?> toMap() {
@@ -42,7 +46,6 @@ class Usuario {
       firstnameColumn: firstname,
       lastnameColumn: lastname,
       emailColumn: email,
-      travelsColumn: travels,
     };
     if (id != null) map[idColumn] = id;
     if (lastname != null) map[lastnameColumn] = lastname;
