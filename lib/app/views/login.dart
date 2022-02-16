@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
           action: AppAction.setToken, payload: bodyResponse["token"]);
 
       getPhoto();
-      await getUser(bodyResponse["token"]);
+      await getUser();
       Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
     } else {
       final Map<String, dynamic> bodyResponse =
@@ -89,7 +89,7 @@ class _LoginState extends State<Login> {
     } else if (response.statusCode >= 200 && response.statusCode < 300) {
       final Map<String, dynamic> bodyResponse =
           Map.from(jsonDecode(response.body));
-      print(bodyResponse);
+
       appStore.dispatcher(
           action: AppAction.setSessao,
           payload: Sessao(
@@ -97,22 +97,6 @@ class _LoginState extends State<Login> {
               firstname: bodyResponse["first_name"],
               lastname: bodyResponse["last_name"],
               email: bodyResponse["email"]));
-    } else {}
-  }
-
-  Future<void> getUser(token) async {
-    final response = await Api.enviarRequisicao(
-      method: "GET",
-      endpoint: INFO_USUARIO(),
-    );
-
-    if (response == null) {
-    } else if (response.statusCode >= 200 && response.statusCode < 300) {
-      final Map<String, dynamic> bodyResponse =
-          Map.from(jsonDecode(response.body));
-      Sessao session = Sessao.fromUsuario(
-          token: token, usuario: Usuario.fromMap(bodyResponse));
-      appStore.dispatcher(action: AppAction.setSessao, payload: session);
     } else {}
   }
 

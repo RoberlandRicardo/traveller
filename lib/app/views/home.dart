@@ -25,7 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String state = 'not_travel';
   String location = '';
-  String name = appStore.state.sessao!.firstname;
+  String name = appStore.state.sessao?.firstname ?? '';
   String urlImage =
       'https://traveller-back.herokuapp.com' + (appStore.state.foto ?? '');
   String _coin = '5,23';
@@ -44,16 +44,18 @@ class _HomeState extends State<Home> {
   }
 
   verifyIsTravelling() {
-    appStore.state.listTravels!.forEach((travel) {
+    appStore.state.listTravels?.forEach((travel) {
       if (travel.ativo) {
         state = 'travelling';
         return;
       }
     });
+
     if (state == 'travelling') return;
     Travel minTimeTravel = Travel();
     minTimeTravel.dataInicio = DateTime.utc(275760, 09, 13);
-    appStore.state.listTravels!.forEach((travel) {
+
+    appStore.state.listTravels?.forEach((travel) {
       if (travel.dataInicio.isAfter(DateTime.now())) {
         if (travel.dataInicio.difference(DateTime.now()).abs() <
             minTimeTravel.dataInicio.difference(DateTime.now()).abs()) {
@@ -73,7 +75,6 @@ class _HomeState extends State<Home> {
       tripName = minTimeTravel.titulo;
     }
     setState(() {});
-
   }
 
   updateCity() async {

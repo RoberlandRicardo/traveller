@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:traveller/app/api/api.dart';
+import 'package:traveller/app/api/routes/viagem.dart';
 import 'package:traveller/app/components/card/card_travel.dart';
 import 'package:traveller/app/components/generic_screen_nivel02.dart';
 import 'package:traveller/app/components/card/card_rota_travel.dart';
 import 'package:traveller/app/models/travel.dart';
+import 'package:traveller/app/models/travel_api.dart';
+import 'package:traveller/app/stores/actions.dart';
 import 'package:traveller/app/stores/app_state.dart';
 import 'package:traveller/app/styles/custom_text.dart';
 import 'package:traveller/app/util/extensionFunctions.dart';
@@ -19,11 +25,62 @@ class PageTravels extends StatefulWidget {
 class _PageTravelsState extends State<PageTravels> {
   Travel? activeTravel;
 
+  List<ListItem> items = [];
+
   @override
   void initState() {
     super.initState();
     activeTravel =
         appStore.state.listTravels.firstWhereOrNull((travel) => travel.ativo);
+    getTravels();
+  }
+
+  Future<void> getTravels() async {
+    final response = await Api.enviarRequisicao(
+        method: "GET",
+        endpoint: TODAS_VIAGENS(),
+        headers: {'Authorization': 'Token ' + appStore.state.sessao!.token});
+    if (response == null) {
+    } else if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<TravelApi> responseBody = List<TravelApi>.from(
+          json.decode(response.body).map((x) => TravelApi.fromJson(x)));
+
+      setState(() {
+        for (var i = 0; i < responseBody.length; i++) {
+          items.add(ItemLists(
+              active: responseBody[i].getElementToListAllTravel('active'),
+              id: responseBody[i].getElementToListAllTravel('id'),
+              title: responseBody[i].getElementToListAllTravel('title')));
+        }
+      });
+    } else {}
+  }
+
+  void _activeTravel(String idOnPress) async {
+    List<ListItem> copyListTravel = items;
+
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].getActive() == true && items[i].getId() != idOnPress) {
+        // enviar quisicição para inativo
+        copyListTravel[i] = ItemLists(
+          title: copyListTravel[i].getTitle(),
+          id: copyListTravel[i].getId(),
+          active: false,
+        );
+      }
+      if (items[i].getActive() == false && items[i].getId() == idOnPress) {
+        // enviar quisicição para ativo
+        copyListTravel[i] = ItemLists(
+          title: copyListTravel[i].getTitle(),
+          id: copyListTravel[i].getId(),
+          active: true,
+        );
+      }
+    }
+
+    setState(() {
+      items = copyListTravel;
+    });
   }
 
   @override
@@ -69,24 +126,39 @@ class _PageTravelsState extends State<PageTravels> {
 
   Drawer getDrawer() {
     return Drawer(
-      child: ListView(
-        children: [
-          Container(
-            height: 60,
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.black26))),
-              child: Text(
-                "Viagens cadastradas",
-                style: TextStyle(
-                    fontSize: 18,
-                    color: CustomText.fontColor,
-                    fontWeight: FontWeight.w700),
-              ),
+      child: Column(
+        children: <Widget>[
+          Center(
+              child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Text(
+              "Viagens cadastradas",
+              style: TextStyle(
+                  fontSize: 18,
+                  color: CustomText.fontColor,
+                  fontWeight: FontWeight.w700),
+            ),
+          )),
+          Divider(height: 1, thickness: 1, color: Colors.black12),
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(height: 1, thickness: 1, color: Colors.black12),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+
+                return ListTile(
+                    title: item.buildTitle(context, index),
+                    onTap: () {
+                      _activeTravel(item.getId());
+                    });
+              },
             ),
           ),
-          for (Travel t in appStore.state.listTravels!)
-            CardTravel(titulo: t.titulo, data: t.dataInicio)
+          if (appStore.state.listTravels != null)
+            for (Travel t in appStore.state.listTravels!)
+              CardTravel(titulo: t.titulo, data: t.dataInicio)
         ],
       ),
     );
@@ -152,5 +224,50 @@ class _PageTravelsState extends State<PageTravels> {
                     ))),
           ],
         ));
+  }
+}
+
+class ItemLists implements ListItem {
+  String title;
+  String id;
+  bool active;
+
+  ItemLists({required this.title, required this.id, required this.active});
+
+  @override
+  Widget buildTitle(BuildContext context, int index) => Text(title,
+      style: TextStyle(
+        fontWeight: active ? FontWeight.bold : FontWeight.normal,
+      ));
+
+  @override
+  String getId() {
+    return id;
+  }
+
+  @override
+  bool getActive() {
+    return active;
+  }
+
+  @override
+  String getTitle() {
+    return title;
+  }
+}
+
+abstract class ListItem {
+  Widget buildTitle(BuildContext context, int index);
+
+  String getId() {
+    return '';
+  }
+
+  bool getActive() {
+    return false;
+  }
+
+  String getTitle() {
+    return '';
   }
 }
