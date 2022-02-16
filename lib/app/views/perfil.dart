@@ -34,6 +34,8 @@ class _PerfilState extends State<Perfil> {
       Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
     },
   };
+  String urlImage =
+      'https://traveller-back.herokuapp.com' + (appStore.state.foto ?? '');
 
   @override
   void initState() {
@@ -141,11 +143,15 @@ class _PerfilState extends State<Perfil> {
                   color: CustomText.fontColor,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Theme.of(context).colorScheme.onBackground,
-                ))),
+                child: appStore.state.foto == null || appStore.state.foto == ''
+                    ? Icon(
+                        Icons.person,
+                        size: 80,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      )
+                    : CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        backgroundImage: NetworkImage(urlImage)))),
         SizedBox(
           height: 10,
         ),
